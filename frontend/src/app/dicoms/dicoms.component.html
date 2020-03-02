@@ -1,0 +1,48 @@
+<div class="" id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row row-stat">
+      <div class="col-sm-12">
+
+        <br>
+        <app-advanced-search></app-advanced-search>
+        <br>
+
+        <mat-tab-group (selectedTabChange)=onTabChanged($event.index) animationDuration="500ms"
+          [(selectedIndex)]="selectedTabIndex" mat-stretch-tabs>
+          <mat-tab>
+            <!--Tab contents can be lazy loaded by declaring the body in a ng-template with the matTabContent attribute.-->
+            <ng-template mat-tab-label>
+              <span>Patients</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <app-patients (patientSelected)="onPatientSelected($event)"></app-patients>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Study" [disabled]="!studyTabEnabled">
+            <ng-template matTabContent>
+              <app-studies [value]="studies" (studySelected)="onStudySelected($event)"></app-studies>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Series" [disabled]="!seriesTabEnabled">
+            <ng-template matTabContent>
+              <app-series [value]="serieses" (seriesSelected)="onSeriesSelected($event)"></app-series>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Instances" [disabled]="!instanceTabEnabled">
+            <ng-template matTabContent>
+              <app-instances [value]="instances" (seriesSelected)="onInstanceSelected($event)"></app-instances>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Equipment" [disabled]="!equipmentTabEnabled">
+            <ng-template matTabContent>
+              <app-equipments></app-equipments>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

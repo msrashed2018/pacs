@@ -1,0 +1,135 @@
+<div class="animated fadeIn ">
+  <div class="row ">
+    <div style="width:100% !important;">
+      <div class="card">
+        <div class="card-header">
+          <strong>Advanced Search</strong>
+          <!-- <div class="card-header-actions">
+            <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i
+                class={{iconCollapse}}></i></button>
+          </div> -->
+        </div>
+        <div style="width:100% !important;">
+          <div class="card-body ">
+            <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()">
+
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="patientName">Patient Name</label>
+                <div class="col-md-6">
+                  <input [(ngModel)]="patientName" type="text" name="patientName" class="form-control"
+                    placeholder="(All Patient Names)">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="patientGender">Patient Gender
+                </label>
+                <div class="col-md-6">
+                  <label class="custom-control custom-control-primary custom-radio">
+                    <input class="custom-control-input" type="radio" name="period" value="all">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">All</span>
+                  </label>
+                  <label class="custom-control custom-control-primary custom-radio">
+                    <input class="custom-control-input" type="radio" name="period" value="male" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">Male</span>
+                  </label>
+                  <label class="custom-control custom-control-primary custom-radio">
+                    <input class="custom-control-input" type="radio" name="period" value="female">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">Female</span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="patientId">Patient ID</label>
+                <div class="col-md-6">
+                  <input [(ngModel)]="patientId" type="text" name="patientId" class="form-control"
+                    placeholder="(All Patient IDs)">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="instituitionName">Instituition
+                  Name</label>
+                <div class="col-md-6">
+                  <input [(ngModel)]="instituitionName" type="text" name="instituitionName" class="form-control"
+                    placeholder="(All Instituitions)">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="physician">Physician</label>
+                <div class="col-md-6">
+                  <input [(ngModel)]="physician" type="text" name="physician" class="form-control"
+                    placeholder="(All Physicians)">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="operatorName">Operator Name
+                </label>
+                <div class="col-md-6">
+                  <input [(ngModel)]="operatorName" type="text" name="operatorName" class="form-control"
+                    placeholder="(All Operators)">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="modality">Modality</label>
+                <div class="col-md-6">
+                  <label class="custom-control custom-control-default custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="custom" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">CT</span>
+                  </label>
+                  <label class="custom-control custom-control-primary custom-checkbox active">
+                    <input class="custom-control-input" type="checkbox" name="custom" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">MG</span>
+                  </label>
+                  <label class="custom-control custom-control-success custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="custom" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">PT</span>
+                  </label>
+                  <label class="custom-control custom-control-info custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="custom" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">XA</span>
+                  </label>
+                  <label class="custom-control custom-control-warning custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="custom" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">ES</span>
+                  </label>
+                  <label class="custom-control custom-control-danger custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="custom" checked="checked">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-label">CT</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label font-weight-bold" for="dateRange">Date</label>
+                <div class="col-md-2">
+                  <input [(ngModel)]="startDate" type="date" name="startDate" class="form-control">
+                </div>
+                <label class="col-md-0 col-form-label font-weight-bold" for="eDate"><b> To
+                  </b></label>
+                <div class="col-md-2">
+                  <input [(ngModel)]="endDate" type="date" name="endDate" class="form-control">
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>
+                  Search</button><i> &nbsp;</i>
+                <button type="reset" class="btn btn-sm btn-danger" (click)="basicSearch()"><i class="fa fa-ban"></i>
+                  Close</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

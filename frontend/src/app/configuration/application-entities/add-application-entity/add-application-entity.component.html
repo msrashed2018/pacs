@@ -1,0 +1,86 @@
+<div class="animated fadeIn ">
+  <div class="row ">
+    <div style="width:100% !important;">
+      <div class="card">
+        <div class="card-header">
+          <strong>Add Application Entity</strong>
+          <div class="card-header-actions">
+          </div>
+        </div>
+
+        <div class="card-body ">
+          <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()">
+
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label font-weight-bold" for="title" style="color: darkblue;">
+                AE Title</label>
+              <div class="col-md-6">
+                <input maxlength="100" [(ngModel)]="data.title" #title="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" type="text" name="title"
+                  class="form-control" required>
+                <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                  <div *ngIf="title.errors.required"> This field is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label font-weight-bold" for="hostname" style="color: darkblue;">
+                Hostname</label>
+              <div class="col-md-6">
+                <input maxlength="100" [(ngModel)]="data.hostname" #hostname="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && hostname.invalid }" type="text" name="hostname"
+                  class="form-control" required>
+                <div *ngIf="f.submitted && hostname.invalid" class="invalid-feedback">
+                  <div *ngIf="hostname.errors.required"> This field is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label font-weight-bold" for="port" style="color: darkblue;">
+                Port</label>
+              <div class="col-md-6">
+                <input maxlength="5" [(ngModel)]="data.port" #port="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && port.invalid }" type="number" name="port"
+                  class="form-control" required>
+                <div *ngIf="f.submitted && port.invalid" class="invalid-feedback">
+                  <div *ngIf="port.errors.required"> This field is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label font-weight-bold" for="storagePath" style="color: darkblue;">
+                Storage Path</label>
+              <div class="col-md-6">
+                <input maxlength="100" [(ngModel)]="data.storagePath" #storagePath="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && storagePath.invalid }" type="text" name="storagePath"
+                  class="form-control" required>
+                <div *ngIf="f.submitted && storagePath.invalid" class="invalid-feedback">
+                  <div *ngIf="storagePath.errors.required"> This field is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label font-weight-bold" for="description" style="color: darkblue;">
+                Description</label>
+              <div class="col-md-6">
+                <input maxlength="120" [(ngModel)]="data.description" type="text" name="description" class="form-control">
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
+                Add</button>
+              <button type="reset" class="btn btn-sm btn-danger" (click)="onClose()"><i class="fa fa-ban"></i>
+                Close</button>
+                <i *ngIf="errorMessage != ''" style="color: red;"> {{errorMessage}} </i>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
