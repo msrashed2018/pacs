@@ -9,12 +9,13 @@
       <th class="text-center">Media Storage SOP Instance UID</th>
       <th class="text-center">Transfer Syntax UID</th>
       <th class="text-center">Created Date</th>
+      <th class="text-center">View</th>
     </tr>
   </thead>
   <tbody>
     
     <tr *ngFor="let instance of instances ; let i=index" (click) = "onInstanceSelected(instance)"> 
-      <td class="text-center"><b>{{items+i+1}}</b></td>
+      <td class="text-center"><b>{{i+1}}</b></td>
       <td class="text-center"><b>{{instance.sopInstanceUID}}</b></td>
       <td class="text-center"><b>{{instance.sopClassUID}}</b></td>
       <td class="text-center"><b>{{instance.instanceNumber}}</b></td>
@@ -22,6 +23,11 @@
       <td class="text-center"><b>{{instance.mediaStorageSopInstanceUID}}</b></td>
       <td class="text-center"><b>{{instance.transferSyntaxUID}}</b></td>
       <td class="text-center"><b>{{instance.createdDate}}</b></td>
+      <td class="text-center">
+        <button type="button" class="btn btn-primary" (click)="onView(instance.id)">
+          <i class="fa fa-eye"></i>
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>

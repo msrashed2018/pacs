@@ -18,7 +18,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let series of serieses ; let i=index" (click) = "onSeriesSelected(series)">
-      <td class="text-center"><b>{{items+i+1}}</b></td>
+      <td class="text-center"><b>{{i+1}}</b></td>
       <td class="text-center"><b>{{series.seriesInstanceUID}}</b></td>
       <td class="text-center"><b>{{series.seriesNumber}}</b></td>
       <td class="text-center"><b>{{series.seriesDescription}}</b></td>
@@ -30,8 +30,8 @@
       <td class="text-center"><b>{{series.seriesDateTime}}</b></td>
       <td class="text-center"><b>{{series.createdDate}}</b></td>
       <td class="text-center">
-        <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(series.id)">view
-          <i class="fa fa-trash"></i>
+        <button type="button" class="btn btn-primary" (click)="onView(series.id)">
+          <i class="fa fa-eye"></i>
         </button>
       </td>
     </tr>

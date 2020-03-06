@@ -19,7 +19,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let study of studies ; let i=index" (click) = "onStudySelected(study)">
-      <td class="text-center"><b>{{items+i+1}}</b></td>
+      <td class="text-center"><b>{{i+1}}</b></td>
+      
       <td class="text-center"><b>{{study.studyID}}</b></td>
       <td class="text-center"><b>{{study.studyDescription}}</b></td>
       <td class="text-center"><b>{{study.studyInstanceUID}}</b></td>
@@ -32,8 +33,8 @@
       <td class="text-center"><b>{{study.studyPriorityID}}</b></td>
       <td class="text-center"><b>{{study.createdDate}}</b></td>
       <td class="text-center">
-        <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(study.id)">view
-          <i class="fa fa-trash"></i>
+        <button type="button" class="btn btn-primary" (click)="onView(study.id)">
+          <i class="fa fa-eye"></i>
         </button>
       </td>
     </tr>
