@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,7 +45,7 @@ public class ServiceExceptionController extends ResponseEntityExceptionHandler {
 				request.getDescription(false));
 		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
-	
+
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public final ResponseEntity<Object> handleMethodArgumentTypeMismatchException(Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
@@ -67,10 +66,10 @@ public class ServiceExceptionController extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String message = "";
 		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-		for (FieldError fieldError: fieldErrors) {
+		for (FieldError fieldError : fieldErrors) {
 			message = message + "  " + fieldError.getDefaultMessage();
-        }
-		
+		}
+
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), message,
 				ex.getBindingResult().toString());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -112,17 +111,17 @@ public class ServiceExceptionController extends ResponseEntityExceptionHandler {
 	@ResponseBody
 	public ResponseEntity<Object> conflict(HttpServletRequest req, DataIntegrityViolationException e,
 			WebRequest request) {
-		System.out.println("\n\n DataIntegrityViolationException Message = "+e.getMostSpecificCause().getMessage()+"\n\n");
+		System.out.println(
+				"\n\n DataIntegrityViolationException Message = " + e.getMostSpecificCause().getMessage() + "\n\n");
 		String message = "";
-		if(e.getMostSpecificCause().getMessage().contains("child record found")){
+		if (e.getMostSpecificCause().getMessage().contains("child record found")) {
 			message = " عفوا لا يمكن الحذف ";
-		}else if(e.getMostSpecificCause().getMessage().contains("primary key violation")){
+		} else if (e.getMostSpecificCause().getMessage().contains("primary key violation")) {
 			message = "هذا النوع تم تسجلة من قبل";
-		}else{
+		} else {
 			message = e.getMostSpecificCause().getMessage();
 		}
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), message,
-				e.getCause().getMessage());
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), message, e.getCause().getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);// 409
 	}
 

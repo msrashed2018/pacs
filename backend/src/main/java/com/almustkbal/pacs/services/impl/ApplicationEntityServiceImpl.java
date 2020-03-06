@@ -19,11 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.almustkbal.pacs.PacsApplication;
 import com.almustkbal.pacs.entities.ApplicationEntity;
+import com.almustkbal.pacs.exceptions.ResourceNotFoundException;
 import com.almustkbal.pacs.repositories.ApplicationEntityRepository;
 import com.almustkbal.pacs.server.DicomServer;
 import com.almustkbal.pacs.server.DicomServerCollectionBean;
@@ -110,7 +110,7 @@ public class ApplicationEntityServiceImpl implements ApplicationEntityService {
 		}
 
 		try {
-			
+
 			PacsApplication.dicomServers.put("DICOM_SERVER_AT_" + ae.getPort(),
 					DicomServer.init(ae.getHostname(), ae.getPort(), ae.getTitle(), storagePath.toString(), eventBus));
 			ae.setStatus(true);
@@ -199,7 +199,7 @@ public class ApplicationEntityServiceImpl implements ApplicationEntityService {
 					server.getDevice().bindConnections();
 					applicationEntity.get().setStatus(true);
 					applicationEntityRepository.save(applicationEntity.get());
-					
+
 				} catch (IOException | GeneralSecurityException e) {
 					LOG.error(e.getMessage(), e);
 					throw new RuntimeException(e.getMessage());
