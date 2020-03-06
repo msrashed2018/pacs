@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.almustkbal.pacs.components.ActiveDicoms;
-import com.almustkbal.pacs.dicom.domain.Dicom;
 import com.almustkbal.pacs.dto.DicomViewResultDTO;
 import com.almustkbal.pacs.dto.TagDTO;
 import com.almustkbal.pacs.entities.Instance;
@@ -47,7 +46,6 @@ import com.almustkbal.pacs.repositories.PatientRepository;
 import com.almustkbal.pacs.repositories.SeriesRepository;
 import com.almustkbal.pacs.repositories.StudyRepository;
 import com.almustkbal.pacs.server.DicomReader;
-import com.almustkbal.pacs.services.DicomMongoService;
 import com.almustkbal.pacs.services.DicomService;
 import com.almustkbal.pacs.services.DirectoryWatchService;
 import com.almustkbal.pacs.utils.DateUtils;
@@ -84,8 +82,6 @@ public class DicomController extends AbstractController {
 
 	@Autowired
 	private DicomService dicomService;
-	@Autowired
-	private DicomMongoService dicomMongoService;
 
 	@Autowired
 	DirectoryWatchService directoryWatchService;
@@ -101,15 +97,14 @@ public class DicomController extends AbstractController {
 
 	@RequestMapping(value = "/dicoms/search", method = RequestMethod.GET)
 	public Page<Patient> searchDicom(
+			@RequestParam(name = "modality", defaultValue = "", required = true) List<String> modalities,
 			@RequestParam(name = "patientName", defaultValue = "", required = false) String patientName,
 			@RequestParam(name = "gender", defaultValue = "", required = false) String gender,
 			@RequestParam(name = "patientId", defaultValue = "", required = false) String patientId,
 			@RequestParam(name = "instituitionName", defaultValue = "", required = false) String instituitionName,
-			@RequestParam(name = "	", defaultValue = "", required = false) String physician,
-			@RequestParam(name = "modality", defaultValue = "", required = false) List<String> modalities,
+			@RequestParam(name = "physician", defaultValue = "", required = false) String physician,
 			@RequestParam(name = "dateFrom", required = false) String dateFrom,
-			@RequestParam(name = "dateTo", required = false) String dateTo,
-			Pageable pageable) {
+			@RequestParam(name = "dateTo", required = false) String dateTo, Pageable pageable) {
 
 //		System.out.println("patientName = "+patientName);
 //		System.out.println("gender = "+gender);
@@ -121,38 +116,23 @@ public class DicomController extends AbstractController {
 //		System.out.println("dateTo = "+dateTo);
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
-		
+
 		if (dateTo != null && dateFrom != null) {
-			
+
 			try {
 				DateUtils.formatDates(start, end, dateFrom, dateTo);
-				
+
 			} catch (ParseException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
-			
-			
+
 		} else {
 			start.add(Calendar.YEAR, -100);
 		}
 
-		return dicomService.getPatients(patientName, gender, patientId, instituitionName, physician, modalities, start.getTime(), end.getTime(), pageable);
-
-	}
-
-	@PostMapping("/dicoms")
-	public ResponseEntity<Dicom> createDicom(@RequestParam("file") MultipartFile multipart) {
-		try {
-			File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + multipart.getOriginalFilename());
-
-			multipart.transferTo(convFile);
-			DicomReader reader = new DicomReader(convFile);
-			Dicom dicom = dicomMongoService.createDicom(reader);
-			return new ResponseEntity<Dicom>(dicom, HttpStatus.OK);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return dicomService.getPatients(patientName, gender, patientId, instituitionName, physician, modalities,
+				start.getTime(), end.getTime(), pageable);
 
 	}
 
@@ -191,7 +171,7 @@ public class DicomController extends AbstractController {
 //	}
 
 	@RequestMapping(value = "/patients/{pkTBLPatientID}", method = RequestMethod.DELETE)
-	public void getPatients(@PathVariable Long pkTBLPatientID) {
+	public void deletePatient(@PathVariable Long pkTBLPatientID) {
 		dicomService.deletePatient(pkTBLPatientID);
 	}
 

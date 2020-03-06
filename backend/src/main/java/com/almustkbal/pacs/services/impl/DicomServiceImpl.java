@@ -153,7 +153,7 @@ public class DicomServiceImpl implements DicomService {
 	@Override
 	@Transactional
 	public Patient buildPatient(DicomReader reader, boolean save) {
-		
+
 		LOG.info("\n\n\n building Patient \n\n\n");
 //		LOG.info("In process; Patient Name: {}, Patient ID: {}", reader.getPatientName(), reader.getPatientID());
 		// check if patient exists
@@ -305,19 +305,14 @@ public class DicomServiceImpl implements DicomService {
 	}
 
 	@Override
-	public Page<Patient> getPatients(String patientName, 
-			String gender,
-			String patientId,
-			String instituitionName,
-			String physician,
-			List<String> modalities,
-			Date dateFrom,
-			Date dateTo,
-			Pageable pageable) {
-		
-		return patientRepository.findByPatientNameAndGenderAndPatientIdAndInstituitionNameAndPhysicianAndModalityAndDateBetween(patientName, gender, patientId, instituitionName, physician, modalities, dateFrom, dateTo, pageable); 
+	public Page<Patient> getPatients(String patientName, String gender, String patientId, String instituitionName,
+			String physician, List<String> modalities, Date dateFrom, Date dateTo, Pageable pageable) {
+
+		return patientRepository
+				.findByPatientNameAndGenderAndPatientIdAndInstituitionNameAndPhysicianAndModalityAndDateBetween(
+						patientName, gender, patientId, instituitionName, physician, modalities, dateFrom, dateTo,
+						pageable);
 	}
-	
 
 	@Override
 	@Transactional

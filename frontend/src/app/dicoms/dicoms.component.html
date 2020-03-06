@@ -4,7 +4,7 @@
       <div class="col-sm-12">
 
         <br>
-        <app-advanced-search></app-advanced-search>
+        <app-advanced-search *ngIf="advanedSearchEnabled"></app-advanced-search>
         <br>
 
         <mat-tab-group (selectedTabChange)=onTabChanged($event.index) animationDuration="500ms"
@@ -15,7 +15,7 @@
               <span>Patients</span>
             </ng-template>
             <ng-template matTabContent>
-              <app-patients (patientSelected)="onPatientSelected($event)"></app-patients>
+              <app-patients [filterBy]='patientFilter' (patientSelected)="onPatientSelected($event)"></app-patients>
             </ng-template>
           </mat-tab>
           <mat-tab label="Study" [disabled]="!studyTabEnabled">

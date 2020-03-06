@@ -5,6 +5,8 @@ import { STEPS } from './viewflow.model';
 import { Series } from '../models/series.model';
 import { Equipment } from '../models/equipment.model';
 import { Instance } from '../models/instance.model';
+import { PatientFilter } from 'app/models/patient-filter.model';
+import { modalities } from 'app/config';
 
 @Component({
   selector: 'app-dicoms',
@@ -21,12 +23,14 @@ export class DicomsComponent implements OnInit {
   seriesTabEnabled : boolean = false;
   instanceTabEnabled : boolean = false;
   equipmentTabEnabled: boolean = false;
+  patientFilter: PatientFilter = new PatientFilter();
+
+  advanedSearchEnabled: boolean = false
   constructor(
-
-
   ) { }
 
   ngOnInit() {
+    this.patientFilter.modalities = modalities
   }
 
   onTabChanged(tabIndex){

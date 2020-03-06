@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PATIENTS_PAGE_SIZE, PATIENTS_PAGE_SORT, NO_DATA_FOUND } from 'app/config';
 import { DicomsService } from '../dicoms.service';
 import { Patient } from '../../models/patient.model';
+import { PatientFilter } from 'app/models/patient-filter.model';
 
 @Component({
   selector: 'app-patients',
@@ -9,12 +10,14 @@ import { Patient } from '../../models/patient.model';
   styleUrls: ['./patients.component.scss']
 })
 export class PatientsComponent implements OnInit {
-  // @Input() count: number = 0;
+  @Input('filterBy') filterCommand: PatientFilter = new PatientFilter();
   @Output('patientSelected') patient : EventEmitter<Patient>= new EventEmitter<Patient>();
 
   patients: Patient[];
   noDataFound = "";
   isAdmin: boolean = false;
+
+
 
   //pagination variables
   maxSize = 3;
@@ -37,7 +40,7 @@ export class PatientsComponent implements OnInit {
     this.refreshData(event.page - 1);
   }
   refreshData(page) {
-    this.dicomsService.getPatients(page, PATIENTS_PAGE_SIZE, PATIENTS_PAGE_SORT).subscribe(
+    this.dicomsService.getPatients(this.filterCommand, page, PATIENTS_PAGE_SIZE, PATIENTS_PAGE_SORT).subscribe(
       response => {
         this.patients = response['content'];
         this.totalItems = response['totalElements'];
