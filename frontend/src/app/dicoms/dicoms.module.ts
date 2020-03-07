@@ -17,6 +17,7 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
 import { DicomsUploadComponent } from './dicoms-upload/dicoms-upload.component';
 import { FileUploadModule} from "ng2-file-upload";
 import { MatInputModule, MatDialogModule } from '@angular/material';
+import { ImageViewerModule } from 'ng2-image-viewer';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,6 +31,7 @@ import { MatInputModule, MatDialogModule } from '@angular/material';
     FileUploadModule,
     MatInputModule,
     MatDialogModule,
+    ImageViewerModule
   ],
   declarations: [DicomsComponent, PatientsComponent, StudiesComponent, SeriesComponent, InstancesComponent, ImagesComponent, EquipmentsComponent, AdvancedSearchComponent, DicomsUploadComponent]
 ,schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -8,3 +8,4 @@ export const PATIENTS_PAGE_SORT= "patientName,asc";
 
 export const modalities: string[] = ["CT","MG", "PT", "XA", "ES"]
 
+export const randomImageSrc = 'https://picsum.photos/900/500/?random'

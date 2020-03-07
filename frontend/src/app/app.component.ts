@@ -14,7 +14,7 @@ declare var jQuery: any;
 
 export class AppComponent {
   title = 'app works!';
-
+  image = 'https://picsum.photos/900/500/?random'
   constructor(private titleService: Title, router: Router, activatedRoute: ActivatedRoute) {
     router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

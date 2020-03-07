@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { DicomViewerModule } from './dicom-viewer/dicom-viewer.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { AllTagsComponent } from './shared/all-tags/all-tags.component';
+import { ImageViewerModule } from 'ng2-image-viewer';
+import { DicomsModule } from './dicoms/dicoms.module';
 
 
 @NgModule({
@@ -37,10 +39,7 @@ import { AllTagsComponent } from './shared/all-tags/all-tags.component';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    DicomViewerModule,
-    ConfigurationModule,
-
-
+    ImageViewerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

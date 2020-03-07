@@ -24,4 +24,5 @@ export class Instance {
     createdDate : string;
     modifiedDate : string;
     series : Series;
+    image : string;
 }

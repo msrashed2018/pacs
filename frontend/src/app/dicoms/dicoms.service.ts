@@ -79,11 +79,25 @@ export class DicomsService {
         }));
   }
 
-  uploadDicom(save: boolean, file: File): Observable<HttpEvent<{}>> {
+  uploadDicom(file: File): Observable<HttpEvent<{}>> {
     let formdata: FormData = new FormData();
 
     formdata.append('file', file);
-    const req = new HttpRequest('POST', `${API_URL}/dicoms/upload?save=${save}`, formdata, {
+    const req = new HttpRequest('POST', `${API_URL}/dicoms/upload`, formdata, {
+      reportProgress: true,
+      // responseType: "text"
+    });
+
+    return this.http.request(req);
+  }
+
+
+
+  viewDicom(file: File): Observable<HttpEvent<{}>> {
+    let formdata: FormData = new FormData();
+
+    formdata.append('file', file);
+    const req = new HttpRequest('POST', `${API_URL}/dicoms/view`, formdata, {
       reportProgress: true,
       // responseType: "text"
     });

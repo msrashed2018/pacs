@@ -11,6 +11,7 @@ export class InstanceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

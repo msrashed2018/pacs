@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImagesComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+  }
 
   ngOnInit() {
-    console.log("images")
+    
   }
 
 }

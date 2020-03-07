@@ -9,15 +9,16 @@ import { EquipmentComponent } from './equipment/equipment.component';
 import { InstanceComponent } from './instance/instance.component';
 import { SeriesComponent } from './series/series.component';
 import { ImageComponent } from './image/image.component';
-import { AllTagsComponent } from './all-tags/all-tags.component';
 import { CommonModule } from '@angular/common';
+import { ImageViewerModule } from 'ng2-image-viewer';
 @NgModule({
   imports: [
     CommonModule,
     DicomViewerRoutingModule,
-    MatTabsModule
+    MatTabsModule,
+    ImageViewerModule
   ],
-  declarations: [ DicomViewerComponent, PatientComponent, StudyComponent, EquipmentComponent, InstanceComponent, SeriesComponent, ImageComponent, AllTagsComponent ],
+  declarations: [ DicomViewerComponent, PatientComponent, StudyComponent, EquipmentComponent, InstanceComponent, SeriesComponent, ImageComponent],
   providers: []
 })
 export class DicomViewerModule { }

@@ -1,16 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Image } from 'app/models/image.model';
+import { randomImageSrc } from 'app/config';
 
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.scss']
 })
-export class ImageComponent implements OnInit {
-  @Input('value') equipment: Image;
-  constructor() { }
+export class ImageComponent{
+  @Input('value') image;
+  constructor() { 
+console.log(this.image);
 
-  ngOnInit() {
+    console.log("constructing image");
+    
   }
-
 }

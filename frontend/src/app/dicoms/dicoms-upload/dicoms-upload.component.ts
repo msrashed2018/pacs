@@ -54,13 +54,10 @@ export class DicomsUploadComponent implements OnInit {
           let index = j;
           // data.append('file', fileItem);
           // data.append('fileSeq', 'seq'+j);
-          this.dicomService.uploadDicom(true, fileItem).subscribe(
+          this.dicomService.uploadDicom( fileItem).subscribe(
             result => {
               if (result.type === HttpEventType.UploadProgress) {
-              
-                  
                 this.progress[index].percentage = Math.round(100 * result.loaded / result.total);
-    
               } else if (result instanceof HttpResponse) {
                 // console.log("file uploaded success");
                 this.uploadDicoms[index] = result.body as DicomViewResult
