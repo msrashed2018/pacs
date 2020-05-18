@@ -7,12 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PreDestroy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,10 +18,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.almustkbal.pacs.components.ActiveDicoms;
-import com.almustkbal.pacs.config.DirectoryWatcherConfig;
-import com.almustkbal.pacs.entities.ApplicationEntity;
+import com.almustkbal.pacs.domain.ApplicationEntity;
 import com.almustkbal.pacs.handlers.IncomingDicomFileHandler;
 import com.almustkbal.pacs.server.DicomServer;
 import com.almustkbal.pacs.server.DicomServerCollectionBean;
@@ -33,36 +31,35 @@ import com.almustkbal.pacs.services.DirectoryWatchService;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootApplication
 public class PacsApplication implements ApplicationRunner {
-	private static final Logger LOG = LoggerFactory.getLogger(PacsApplication.class);
 
 	public static Map<String, DicomServer> dicomServers = new HashMap<>();
 
-	@Value(value = "${pacs.storage.dcm}")
-	private String pacsDicomStorage;
+	@Value("${files.storage.path}")
+	private String mainStoragePath;
 
-	@Value(value = "${pacs.storage.image}")
-	private String pacsImageStorage;
-	
 	@Value(value = "${directory.watcher.path}")
 	private String directoryWatcherPath;
-	
+
 	@Value(value = "${directory.watcher.enabled}")
 	private boolean directoryWatcherEnabled;
-	
+
 	@Value(value = "${directory.watcher.index-zip-files}")
 	private boolean indexZipFilesEnabled;
-	
+
 	@Value(value = "${directory.watcher.save-thumbnail}")
 	private boolean saveThumbnailEnabled;
-	
+
 	@Value(value = "${pacs.address}")
 	private String pacsIpBindAddress;
 
 	@Autowired
 	ApplicationEntityService applicationEntityService;
-	
+
 	@Autowired
 	DirectoryWatchService directoryWatchService;
 
@@ -73,7 +70,7 @@ public class PacsApplication implements ApplicationRunner {
 //	private StorageServiceImpl storageService;
 	public static void main(String[] args) {
 		SpringApplication.run(PacsApplication.class, args);
-		LOG.info("================== Welcome to Almostkabal DICOM Server! ======================");
+		log.info("================== Welcome to Almostkabal DICOM Server! ======================");
 	}
 
 	/**************************
@@ -147,60 +144,72 @@ public class PacsApplication implements ApplicationRunner {
 //			throw new RuntimeException("Could not initialize storage!");
 //		}
 
-		
 		// start directoryWatchService
-		try {
-			DirectoryWatcherConfig watcherConfig = new DirectoryWatcherConfig(directoryWatcherEnabled, directoryWatcherPath, indexZipFilesEnabled, saveThumbnailEnabled);
-			directoryWatchService.init(watcherConfig);
-		} catch (IOException | InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		
+//		try {
+//			DirectoryWatcherConfig watcherConfig = new DirectoryWatcherConfig(directoryWatcherEnabled,
+//					directoryWatcherPath, indexZipFilesEnabled, saveThumbnailEnabled);
+//			directoryWatchService.init(watcherConfig);
+//		} catch (IOException | InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
+
 		// start application Entities
-		for (ApplicationEntity ae : applicationEntityService.getAllApplicationEntities()) {
-			Path storagePath = Paths.get(ae.getStoragePath());
+
+		List<ApplicationEntity> applicationEntities = applicationEntityService.getAllApplicationEntities();
+
+		log.info("Number Of AEs={}", applicationEntities.size());
+
+		for (ApplicationEntity ae : applicationEntities) {
+			log.info("AE={}", ae.toString());
+			Path storagePath = Paths.get(mainStoragePath + "/" + ae.getStoragePath());
 			if (!Files.exists(storagePath)) {
 				try {
-					Files.createDirectory(storagePath);
+					Files.createDirectories(storagePath);
 				} catch (IOException e) {
-					LOG.error(e.getMessage(), e);
-					throw new RuntimeException("Could not initialize storage - " + ae.toString());
+					log.error(e.getMessage(), e);
+					throw new RuntimeException("Could not initialize storage - " + storagePath.toString());
 				}
 			}
 			try {
 
 				DicomServer server = DicomServer.init(ae.getHostname(), ae.getPort(), ae.getTitle(),
 						storagePath.toString(), asyncEventBus());
+
+				log.info("\n\n\n add new new application Entity\n\n\n");
 				dicomServers.put("DICOM_SERVER_AT_" + ae.getPort(), server);
 
 				if (!ae.isStatus()) {
 					server.getDevice().unbindConnections();
 				}
+
 //				dicomServerCollectionBean.add("DICOM_SERVER_AT_" + ae.getPort(), DicomServer.init(ae.getHostname(),
 //						ae.getPort(), ae.getTitle(), storagePath.toString(), asyncEventBus()));
 			} catch (RuntimeException e) {
-				LOG.error(e.getMessage(), e);
+				log.error(e.getMessage(), e);
 				throw new RuntimeException(e.getMessage());
 			} catch (IOException e) {
 
 				if (e.getCause() instanceof BindException)
-					LOG.error(e.getMessage(), e);
+					log.error(e.getMessage(), e);
 			} catch (GeneralSecurityException e) {
-				LOG.error(e.getMessage(), e);
+				log.error(e.getMessage(), e);
 				throw new RuntimeException(e.getMessage());
 			}
 		}
+		log.info("\n\n\n dicomServers = {} \n\n", dicomServers.entrySet().toString());
 
 	}
 
-	@PreDestroy
-	public void onClose() {
-		for (Map.Entry<String, DicomServer> entry : dicomServers.entrySet()) {
-			entry.getValue().getDevice().unbindConnections();
-			dicomServers.remove(entry.getKey());
-
-		}
-	}
+//	@PreDestroy
+//	public void onClose() {
+//
+//		log.info("\n\n\n Closing Application \n\n\n");
+//		for (Map.Entry<String, DicomServer> entry : dicomServers.entrySet()) {
+//			entry.getValue().getDevice().unbindConnections();
+//			dicomServers.remove(entry.getKey());
+//
+//		}
+//	}
 
 //    /************************************************* Database JPA and Hibernate Settings ********************************************************/
 //    @Bean //Creating and registering in spring context an entityManager
@@ -237,4 +246,9 @@ public class PacsApplication implements ApplicationRunner {
 	/*************************************************
 	 * End of Database JPA and Hibernate Settings
 	 ********************************************************/
+
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

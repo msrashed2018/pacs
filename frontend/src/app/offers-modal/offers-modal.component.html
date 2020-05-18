@@ -1,0 +1,360 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div
+      style="background: #a71c37"
+      class="card-header card-header-danger color-white margin-bottom-16"
+    >
+      <span style="color: white;" class="card-title "> Offer </span>
+      <input
+        type="file"
+        style="display: none"
+        accept="image/*"
+        id="primaryImageFileUpload"
+        name="primaryImageFileUpload"
+        (change)="onPrimaryImagSelectFile($event)"
+      />
+      <input
+        type="file"
+        style="display: none"
+        accept="image/*"
+        id="imageFileUpload"
+        name="imageFileUpload"
+        (change)="onImagSelectFile($event)"
+      />
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Category</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="category"
+            [(ngModel)]="dataObj.category"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">الفئات</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="categoryAr"
+            [(ngModel)]="dataObj.categoryAr"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Merchant</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="merchant"
+            [(ngModel)]="dataObj.merchant"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">التاجر</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="merchantAr"
+            [(ngModel)]="dataObj.merchantAr"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Title</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="title"
+            [(ngModel)]="dataObj.title"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">العنوان</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="title"
+            [(ngModel)]="dataObj.titleAr"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Description</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="description"
+            [(ngModel)]="dataObj.description"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">الوصف</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="descriptionAr"
+            [(ngModel)]="dataObj.descriptionAr"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Website URL</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="websiteUrl"
+            [(ngModel)]="dataObj.websiteUrl"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head"> رابط الموقع</mat-label>
+          <input
+            required
+            [disabled]="!(isAdd || isUpdate)"
+            name="websiteUrlAr"
+            [(ngModel)]="dataObj.websiteUrlAr"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Location</mat-label>
+          <input
+            required
+            name="location"
+            [(ngModel)]="dataObj.location"
+            matInput
+            [disabled]="!(isAdd || isUpdate)"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">المكان</mat-label>
+          <input
+            required
+            name="locationAr"
+            [(ngModel)]="dataObj.locationAr"
+            matInput
+            [disabled]="!(isAdd || isUpdate)"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label>Start Date</mat-label>
+          <input
+            required
+            matInput
+            [(ngModel)]="myStartDate"
+            [ngxMatDatetimePicker]="startDate"
+            placeholder="Start Date"
+            [readonly]="true"
+            [disabled]="!(isAdd || isUpdate)"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="startDate"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker
+            #startDate
+            [showSpinners]="false"
+            [showSeconds]="true"
+            [stepHour]="1"
+            [stepMinute]="1"
+            [stepSecond]="1"
+            [touchUi]="false"
+            [enableMeridian]="true"
+            [disableMinute]="false"
+            [hideTime]="false"
+          >
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label>End Date</mat-label>
+          <input
+            required
+            matInput
+            [(ngModel)]="myEndDate"
+            [ngxMatDatetimePicker]="endDate"
+            placeholder="End Date"
+            [readonly]="true"
+            [disabled]="!(isAdd || isUpdate)"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="endDate"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker
+            #endDate
+            [showSpinners]="false"
+            [showSeconds]="true"
+            [stepHour]="1"
+            [stepMinute]="1"
+            [stepSecond]="1"
+            [touchUi]="false"
+            [enableMeridian]="true"
+            [disableMinute]="false"
+            [hideTime]="false"
+          >
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Terms And Conditions</mat-label>
+          <textarea
+            required
+            matInput
+            name="termsAndConditions"
+            placeholder="Terms And Conditions"
+            [(ngModel)]="dataObj.termsAndConditions"
+            [disabled]="!(isAdd || isUpdate)"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">الشروط و الأحكام</mat-label>
+          <textarea
+            required
+            matInput
+            name="termsAndConditionsAr"
+            placeholder="الشروط و الأحكام"
+            [(ngModel)]="dataObj.termsAndConditionsAr"
+            [disabled]="!(isAdd || isUpdate)"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-6 col-md-6">
+        <br />
+        <mat-label class="popup-table-head">Primary Image : </mat-label>
+        <br />
+        <ng-container>
+          <img [src]="primaryImage" *ngIf="primaryImage" />
+          <img src="assets/img/empty_image.jpg" *ngIf="!primaryImage" />
+          <br />
+          <br />
+          <i
+            *ngIf="dataObj.primaryImage && (isAdd || isUpdate)"
+            style="cursor: pointer; padding-right: 25px;"
+            (click)="updatePrimaryImage()"
+            class="material-icons"
+            >edit</i
+          >
+          <i
+            *ngIf="!dataObj.primaryImage && (isAdd || isUpdate)"
+            style="cursor: pointer; padding-right: 25px;"
+            (click)="updatePrimaryImage()"
+            class="material-icons"
+            >cloud_upload</i
+          >
+          <input type="file" style="display: none" />
+        </ng-container>
+      </div>
+
+      <div class="col-xs-6 col-md-6">
+        <br />
+        <mat-label class="popup-table-head">Other Images : </mat-label>
+        <br />
+        <img [src]="seletcdImage.imagePath" *ngIf="seletcdImage.imagePath" />
+        <img src="assets/img/empty_image.jpg" *ngIf="!seletcdImage.imagePath" />
+        <br />
+        <br />
+        <i
+          style="cursor: pointer; padding-right: 25px;"
+          (click)="addImage()"
+          class="material-icons"
+          *ngIf="isAdd || isUpdate"
+          >cloud_upload</i
+        >
+        <i
+          style="cursor: pointer;padding-right: 25px"
+          class="material-icons"
+          mat-raised-button
+          (click)="deleteImage()"
+          *ngIf="images.length != 0 && (isAdd || isUpdate)"
+          >delete</i
+        >
+        <i
+          style="cursor: pointer;padding-right: 25px"
+          class="material-icons"
+          mat-raised-button
+          (click)="pastImage()"
+          [ngClass]="imageCursor == 0 ? 'disabled' : ''"
+          >fast_rewind</i
+        >
+        <i
+          style="cursor: pointer;padding-right: 25px "
+          class="material-icons "
+          mat-raised-button
+          (click)="nextImage()"
+          [ngClass]="imageCursor + 1 >= images.length ? 'disabled' : ''"
+          >fast_forward</i
+        >
+      </div>
+    </div>
+
+    <div style="text-align: center; ">
+      <button mat-button (click)="onClickCancel()" class="btn btn-warn ">
+        Cancel
+      </button>
+      <button
+        mat-button
+        *ngIf="!isUpdate && isAdd"
+        (click)="addOffers()"
+        style="margin:16px "
+        class="btn btn-success "
+      >
+        Add
+      </button>
+      <button
+        mat-button
+        *ngIf="isUpdate"
+        (click)="updateOffer()"
+        style="margin:16px "
+        class="btn btn-success "
+      >
+        Update
+      </button>
+    </div>
+  </div>
+</div>

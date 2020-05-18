@@ -1,0 +1,13 @@
+.createdDate-radio-group {
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0;
+  }
+  
+  .createdDate-radio-button {
+    margin: 5px;
+  }
+
+  .fa_custom {
+    color: rgb(62, 153, 2)
+    }

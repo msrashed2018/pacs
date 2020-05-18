@@ -1,0 +1,33 @@
+=> When creating user, login not working.    *done*
+=> Add filter in dicoms-search by today, lastweek, lastmonth.   *done* logic remaining
+=> Add sort by icon on table column. *done*
+=> Image is not displayed.
+=> View all images for patient.
+=> Allow upload zip file....
+=> Save dicom images...  Allow index zip files for directory watcher and AE.
+=> Export table (Patient, Study, Equipment, Series) from search.
+=> Merge between two patient.
+
+
+=> 
+
+1- Customer request customized order. Order's status become *PENDING* and go to *Operation*
+
+2- Operation assign Survey_Techninician, Order's status become *CS_SURVEY_CONFIRMATION* and go to *Customer Support*
+
+3- Customer Support confirm the survey after contacting the customer manually, Order's status become *SURVEY_COFIRMED* and go to *Operation*
+
+4- Operation input order's items and the techninician name, Order's status become *CS_ITEMS_CONFIRMATION* and go to *Customer Support*.
+
+5- Customer Support confirm the items entered by the operation, Order's status become *AWAITING_CUSTOMER_CONFIRMATION* and go to Customer to confirm (Order also displayed to *Customer Support*).
+
+6- Customer Confirm the items, Order's status become *ASSIGNED* and go to *Operation*.
+
+7- Operation will complete the order, Order's status become *CS_COMPLETIION_CONFIRMATION* and go to *Customer Support*.
+
+8- Customer Support confirm that the order is completed. Order's status become *COMPLETED*.
+
+9- If operation rolled back the order, it will go to the first status (*PENDING*).
+
+
+

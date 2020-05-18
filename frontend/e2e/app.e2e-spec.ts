@@ -1,10 +1,10 @@
-import { Ng4adminPage } from './app.po';
+import { MaterialDashboardAngularPage } from './app.po';
 
-describe('ng4admin App', () => {
-  let page: Ng4adminPage;
+describe('khedma-admin App', () => {
+  let page: MaterialDashboardAngularPage;
 
   beforeEach(() => {
-    page = new Ng4adminPage();
+    page = new MaterialDashboardAngularPage();
   });
 
   it('should display message saying app works', () => {

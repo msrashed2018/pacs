@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.almustkbal.pacs.entities.ApplicationEntity;
+import com.almustkbal.pacs.domain.ApplicationEntity;
 
 @Component
 public class DicomServerCollectionBean {

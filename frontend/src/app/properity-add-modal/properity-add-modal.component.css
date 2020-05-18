@@ -1,0 +1,15 @@
+.upload-docs:hover{
+    cursor: pointer;
+}
+
+.upload-docs{
+    font-size:28px;
+    margin-top: 10px;
+    margin-left: 50px;
+    color: red;
+}
+
+.actionsContainer {
+    margin: auto;
+    display: table;
+  }

@@ -1,0 +1,4 @@
+::ng-deep .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate
+{
+  background: #a71c37 !important; 
+}

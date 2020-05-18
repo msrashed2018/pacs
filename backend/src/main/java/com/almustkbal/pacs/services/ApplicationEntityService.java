@@ -2,7 +2,7 @@ package com.almustkbal.pacs.services;
 
 import org.springframework.data.domain.Pageable;
 
-import com.almustkbal.pacs.entities.ApplicationEntity;
+import com.almustkbal.pacs.domain.ApplicationEntity;
 
 import java.util.List;
 

@@ -1,0 +1,106 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div style="background: #a71c37" class="card-header card-header-danger color-white margin-bottom-16">
+      Access Card
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Project Name</mat-label>
+          <input #projectName="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.projectName" name="projectName"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Property Number</mat-label>
+          <input #unitNumber="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.unitNumber" name="unitNumber"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Card Serial</mat-label>
+          <input #firstNum="ngModel" required [disabled]="data.permission === 'justView'"
+            [(ngModel)]="accessCardObj.cardNumber1" name="firstNum" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <!-- <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Card Serial 2</mat-label>
+          <input #secNum="ngModel" required [disabled]="data.permission === 'justView'"
+            [(ngModel)]="accessCardObj.cardNumber2" name="secNum" matInput autocomplete="off" />
+        </mat-form-field>
+      </div> -->
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Owner Name</mat-label>
+          <input #ownerName="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.ownerName" name="ownerName" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Owner Mobile</mat-label>
+          <input #ownerMobile="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.ownerMobile" name="ownerMobile"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Request Date</mat-label>
+          <input #requestDate="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.requestDate" name="requestDate"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="accessCardObj.approvedBy">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Approved By</mat-label>
+          <input #firstNum="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.approvedBy" name="approvedBy" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="accessCardObj.approvedDate">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Approved Date</mat-label>
+          <input #secNum="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.approvedDate" name="approvedDate"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="accessCardObj.modifiedBy">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Modified By</mat-label>
+          <input #firstNum="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.modifiedBy" name="modifiedBy" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="accessCardObj.modifiedDate">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Modified Date</mat-label>
+          <input #secNum="ngModel" [disabled]="true" [(ngModel)]="accessCardObj.modifiedDate" name="modifiedDate"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-12" *ngIf="accessCardObj.licenseFrontImage">
+        <mat-label class="popup-table-head">License:</mat-label><br>
+        <ul>
+          <li *ngIf="accessCardObj.licenseFrontImage && frontImageLoaded" class="imageUl">
+            <img [src]="frontImage">
+          </li>
+          <li *ngIf="accessCardObj.licenseBackImage && backImageLoaded" class="imageUl">
+            <img [src]="backImage">
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <button mat-button (click)="onClickCancel()" class="btn btn-warn">
+        Cancel
+      </button>
+      <button mat-button *ngIf="data.permission !== 'justView'" (click)="ApproveAccessCardAndUpdateSerial()"
+        style="margin:16px" class="btn btn-success">
+        Approve
+      </button>
+    </div>
+  </div>
+</div>

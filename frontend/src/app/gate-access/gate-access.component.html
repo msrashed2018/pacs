@@ -1,0 +1,316 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">Gate access</h4>
+        <p class="card-category">Here are all Gate accesses</p>
+      </div>
+
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Project Name</mat-label>
+            <mat-select
+              [(ngModel)]="filters.projects"
+              multiple
+              (selectionChange)="getData()"
+            >
+              <mat-option
+                *ngFor="let p of distinctProjectsName"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.unitNumber"
+              placeholder="Property Number"
+              (keydown.enter)="getData()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.userName"
+              placeholder="Owner Name"
+              (keydown.enter)="getData()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.guestName"
+              placeholder="Guest Name"
+              (keydown.enter)="getData()"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>From Date</mat-label>
+            <input
+              [(ngModel)]="filters.fromDate"
+              disabled
+              autocomplete="false"
+              matInput
+              [matDatepicker]="orderspicker1"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="orderspicker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #orderspicker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input
+              [(ngModel)]="filters.toDate"
+              disabled
+              matInput
+              [matDatepicker]="orderspickerTo1"
+              [min]="filters.fromDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="orderspickerTo1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #orderspickerTo1></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select
+              [(ngModel)]="filters.statusArr"
+              (selectionChange)="getData()"
+              multiple
+            >
+              <mat-option
+                *ngFor="let p of accessStatus"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button
+            (click)="getData()"
+            class="btn btn-success"
+            style="width:100%"
+            mat-raised-button
+          >
+            Search
+          </button>
+        </div>
+        <div class="col-xs-3 col-md-5" style="text-align: right;">
+          <button
+            (click)="getData()"
+            class="btn btn-success refreshBtn"
+            style="margin: 7px;"
+            mat-raised-button
+          >
+            <img
+              mat-raised-button
+              matTooltip="Refresh Data"
+              src="assets/img/refresh1.png"
+              class="refreshImg"
+            />
+          </button>
+          <button
+            (click)="restFilters()"
+            class="btn btn-success"
+            mat-raised-button
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table table-hover table-fixed" style="direction: ltr">
+          <div class="mat-elevation-z8">
+            <table
+              mat-table
+              [dataSource]="dataSource"
+              class="table"
+              id="gateAccess-table"
+            >
+              <ng-container matColumnDef="projectName">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Project Name
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.projectName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="userName">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Owner Name
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.userName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="unitNumber">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Property Number
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.unitNumber }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="guestName">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Guest Name
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.guestName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="numberOfGuests">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Number Of Guests
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.numberOfGuests }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="carType">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Car Type
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.carType }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="plateNumber">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Plate Number
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.plateNumber }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accessDate">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Access Date
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.accessDate }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary textCenter"
+                  style="font-weight: bold"
+                >
+                  Status
+                </th>
+                <td mat-cell *matCellDef="let element" class="textCenter">
+                  {{ element.status }}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <div>
+              <app-pagination
+                [currentPage]="filters.page"
+                [totalPage]="totalPages"
+                (pageChange)="pagination($event)"
+                (sizeChange)="onPageChange($event)"
+                (exportData)="export()"
+                showExportData="{{
+                  gateAccesses && gateAccesses.length > 0 ? 'true' : 'false'
+                }}"
+              ></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+  </div>
+</div>

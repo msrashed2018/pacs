@@ -1,0 +1,401 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">Subscriptions</h4>
+        <p class="card-category">Here are all Subscriptions</p>
+      </div>
+      <mat-tab-group (selectedTabChange)="tabChanged($event)">
+        <mat-tab label="Pending"> </mat-tab>
+        <mat-tab label="Ready"> </mat-tab>
+        <mat-tab label="Subscribed"> </mat-tab>
+        <mat-tab label="Expired"> </mat-tab>
+        <mat-tab label="Cancelled"> </mat-tab> 
+      </mat-tab-group>
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Project Name</mat-label>
+            <mat-select
+              multiple
+              [(ngModel)]="filters.projects"
+              (selectionChange)="listAllSubscriptions()"
+            >
+              <mat-option
+                *ngFor="let p of distinctProjectsName"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.unitNumber"
+              placeholder="Property Number"
+              (keydown.enter)="listAllSubscriptions()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.ownerName"
+              placeholder="Owner Name"
+              (keydown.enter)="listAllSubscriptions()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Subscription Type</mat-label>
+            <mat-select
+              [(ngModel)]="filters.serviceTypes"
+              (selectionChange)="listAllSubscriptions()"
+              multiple
+            >
+              <mat-option
+                *ngFor="let p of servicesArr"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.ownerMobile" placeholder="Owner Mobile"
+              (keydown.enter)="listAllSubscriptions()" />
+          </mat-form-field>
+        </div> -->
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>From Date</mat-label>
+            <input
+              [(ngModel)]="filters.fromDate"
+              disabled
+              autocomplete="false"
+              matInput
+              [matDatepicker]="picker"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input
+              [(ngModel)]="filters.toDate"
+              disabled
+              matInput
+              [matDatepicker]="pickerTo"
+              [min]="filters.fromDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="pickerTo"
+            ></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #pickerTo></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select
+              [(ngModel)]="filters.statusArr"
+              (selectionChange)="listAllSubscriptions()"
+              multiple
+            >
+              <mat-option
+                *ngFor="let p of subscriptionStatus"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button
+            (click)="listAllSubscriptions()"
+            class="btn btn-success"
+            style="width:100%"
+            mat-raised-button
+          >
+            Search
+          </button>
+        </div>
+        <div class="col-xs-6 col-md-5">
+          <div style="text-align: right;">
+            <button
+              (click)="listAllSubscriptions()"
+              class="btn btn-success refreshBtn"
+              style="margin: 7px;"
+              mat-raised-button
+            >
+              <img
+                mat-raised-button
+                matTooltip="Refresh Data"
+                src="assets/img/refresh1.png"
+                class="refreshImg"
+              />
+            </button>
+            <button
+              (click)="resetFilter()"
+              class="btn btn-success"
+              style="margin: 7px;"
+              mat-raised-button
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <br />
+        <div class="table-responsive mat-elevation-z8">
+          <table
+            id="subscription-table"
+            mat-table
+            [dataSource]="dataSource"
+            class="table"
+          >
+            <ng-container matColumnDef="id">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Reference
+              </th>
+              <td
+                (click)="openViewDialog(subscr)"
+                mat-cell
+                *matCellDef="let subscr"
+                class="pointer"
+              >
+                <span style="cursor: pointer;">
+                  {{ subscr.subscriptionId }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectName">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Project Name
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer"
+              >
+                {{ subscr.projectName }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ownerName">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Owner Name
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer"
+              >
+                {{ subscr.ownerName }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="buildingNumber">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Property Number
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer"
+              >
+                {{ subscr.unitNumber }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceName">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Subscription Type
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer"
+              >
+                {{ subscr.item.type.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="requestDate">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Request Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer"
+              >
+                {{ subscr.requestDate }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="fromDate">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Start Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer customizeDate"
+              >
+                {{ subscr.fromDate }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="toDate">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                End Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer customizeDate"
+              >
+                {{ subscr.toDate }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Status
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let subscr"
+                (click)="openViewDialog(subscr)"
+                class="pointer"
+              >
+                {{ subscr.status }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Action">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Total Price
+              </th>
+              <td mat-cell *matCellDef="let subscr" class="pointer">
+                <span *ngIf="subscr.totalPrice">{{ subscr.totalPrice }} </span>
+                <ng-container
+                  *ngIf="
+                    (subscr.item.type.serviceCode === 'C002' ||
+                      subscr.item.type.serviceCode === 'C007') &&
+                    !subscr.totalPrice &&
+                    subscr.status == 'PENDING'
+                  "
+                >
+                  <input
+                    type="number"
+                    min="0"
+                    #projectName{{subscr.subscriptionId}}="ngModel"
+                    [(ngModel)]="subscr.totalArea"
+                    name="{{ subscr.subscriptionId }}"
+                    matInput
+                    autocomplete="off"
+                    placeholder="Area"
+                    class="input-class"
+                  />
+                  <span style="cursor: pointer;" *ngIf="subscr.totalArea">
+                    <i class="material-icons" (click)="saveArea(subscr)"
+                      >check</i
+                    ></span
+                  >
+                </ng-container>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <div>
+            <app-pagination
+              [currentPage]="this.filters.page"
+              [totalPage]="this.totalPages"
+              (pageChange)="pagination($event)"
+              (sizeChange)="onPageChange($event)"
+              (exportData)="export()"
+              showExportData="{{
+                subscriptions && subscriptions.length > 0 ? 'true' : 'false'
+              }}"
+            ></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

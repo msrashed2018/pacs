@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.almustkbal.pacs.entities.Color;
+import com.almustkbal.pacs.domain.Color;
 import com.almustkbal.pacs.services.ColorService;
 
 @CrossOrigin(origins = "*")

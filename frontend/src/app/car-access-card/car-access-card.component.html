@@ -1,0 +1,214 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">Access cards</h4>
+        <p class="card-category">Here are all Access Cards</p>
+      </div>
+
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Project Name</mat-label>
+            <mat-select [(ngModel)]="filters.projects" (selectionChange)="listAllAccessCards()" multiple>
+              <mat-option *ngFor="let p of distinctProjectsName" [value]="p.id" style="color: black;">
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.unitNumber" placeholder="Property Number"
+              (keydown.enter)="listAllAccessCards()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.ownerName" placeholder="Owner Name"
+              (keydown.enter)="listAllAccessCards()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.cardNumber" placeholder="Card Serial"
+              (keydown.enter)="listAllAccessCards()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="filters.statusArr" (selectionChange)="listAllAccessCards()" multiple>
+              <mat-option *ngFor="let p of accessStatus" [value]="p.id" style="color: black;">
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>From Date</mat-label>
+            <input [(ngModel)]="filters.fromDate" disabled autocomplete="false" matInput [matDatepicker]="picker" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input [(ngModel)]="filters.toDate" disabled matInput [matDatepicker]="pickerTo" [min]="filters.fromDate" />
+            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #pickerTo></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button (click)="listAllAccessCards()" class="btn btn-success" style="width:100%" mat-raised-button>
+            Search
+          </button>
+        </div>
+        <div class="col-xs-6 col-md-5">
+          <div style="text-align: right;">
+            <button (click)="listAllAccessCards()" class="btn btn-success refreshBtn" style="margin: 7px;"
+              mat-raised-button>
+              <img mat-raised-button matTooltip="Refresh Data" src="assets/img/refresh1.png" class="refreshImg" />
+            </button>
+            <button (click)="resetFilter()" class="btn btn-success" style="margin: 7px;" mat-raised-button>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive mat-elevation-z8">
+          <table id="access-card-table" mat-table [dataSource]="dataSource" matSort class="table">
+            <ng-container matColumnDef="OwnerName">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Owner Name
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                {{ card.ownerName }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="propertyNumber">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Property Number
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                {{ card.unitNumber }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ProjectName">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Project Name
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                {{ card.projectName }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="requestDate">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Request Date
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                {{ card.requestDate }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="approvedBy">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Approved By
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                <span *ngIf="card.approvedBy">{{ card.approvedBy }}</span>
+                <span *ngIf="!card.approvedBy">
+                  -
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="approvedDate">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Approved Date
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                <span *ngIf="card.approvedDate">{{ card.approvedDate }}</span>
+                <span *ngIf="!card.approvedDate">
+                  -
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cardNumber1">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Card Serial
+              </th>
+              <td mat-cell *matCellDef="let card" (click)="openSerialOfAccessCardDialogView(card)" class="pointer">
+                <span *ngIf="card.cardNumber1">{{ card.cardNumber1 }}</span>
+                <span *ngIf="!card.cardNumber1">
+                  -
+                </span>
+              </td>
+            </ng-container>
+            <!-- 
+            <ng-container matColumnDef="cardNumber2">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Card Serial 2
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let card"
+                (click)="openSerialOfAccessCardDialogView(card)"
+                class="pointer"
+              >
+                <span *ngIf="card.cardNumber2">{{ card.cardNumber2 }}</span>
+                <span *ngIf="!card.cardNumber2">
+                  -
+                </span>
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Status
+              </th>
+              <td mat-cell *matCellDef="let card" class="pointer" (click)="openSerialOfAccessCardDialogView(card)">
+                {{ card.status }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold"></th>
+              <td mat-cell *matCellDef="let card">
+                <i style="cursor: pointer; padding-right: 25px;" *ngIf="card.status == 'PENDING'"
+                  (click)="openSerialOfAccessCardDialog(card)" class="material-icons">edit</i>
+                <i style="cursor: pointer;" class="material-icons" mat-raised-button
+                  (click)="openDeleteDialog(card.accessCardId, card.ownerName)">delete</i>
+                <i class="material-icons perform-edit" title="attach" style="cursor: default;opacity: 0.6;"
+                  *ngIf="card.licenseBackImage" mat-raised-button matTooltip="This item have images">attach_file</i>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <div>
+            <app-pagination [currentPage]="filters.page" [totalPage]="totalPages" (pageChange)="pagination($event)"
+              (sizeChange)="onPageChange($event)" (exportData)="export()" showExportData="{{
+                accessCards && accessCards.length > 0 ? 'true' : 'false'
+              }}"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

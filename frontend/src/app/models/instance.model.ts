@@ -1,4 +1,5 @@
 import { Series } from './series.model';
+import { Radiation } from './radiation.model';
 
 export class Instance {
     pkTBLInstanceID : number;
@@ -23,6 +24,7 @@ export class Instance {
 	contentDateTime : string;
     createdDate : string;
     modifiedDate : string;
+    radiation: Radiation;
     series : Series;
     image : string;
 }

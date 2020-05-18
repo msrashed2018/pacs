@@ -1,0 +1,209 @@
+<div class="main-content">
+    <div class="container-fluid">
+  
+  
+      <form class="example-form">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div style="background: #a71c37; color: aliceblue;" class="card-header card-danger">
+                <h4 style="color: #ffffff;" class="card-title ">Subscription</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <table class="example-full-width" cellspacing="0">
+          <tr style="padding-bottom: 20px;">
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Subscription ID</mat-label>
+                <input  [disabled]="true"  #subscriptionId="ngModel" required  
+                  [(ngModel)]="subscription.subscriptionId" name="subscriptionId" matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Project Name</mat-label>
+                <input #projectName="ngModel" [disabled]="true" [(ngModel)]="subscription.projectName" name="projectName"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Subscription Type</mat-label>
+                <input #type="ngModel" [disabled]="true" [(ngModel)]="subscription.item.type.name" name="type"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+           
+  
+          </tr>
+  
+   
+  
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Owner ID</mat-label>
+                <input #ownerIdNumber="ngModel" [disabled]="true" [(ngModel)]="subscription.ownerIdNumber" name="ownerIdNumber"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Owner Name</mat-label>
+                <input  [disabled]="true"  #ownerName="ngModel" required  
+                  [(ngModel)]="subscription.ownerName" name="ownerName" matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Owner Mobile</mat-label>
+                <input  [disabled]="true"  #ownerMobile="ngModel" required  
+                  [(ngModel)]="subscription.ownerMobile" name="ownerMobile" matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+  
+  
+       
+          </tr>
+  
+  
+  
+   
+  
+          <tr>
+                  <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Request Date</mat-label>
+                <input #requestDate="ngModel" [disabled]="true" [(ngModel)]="subscription.requestDate" name="requestDate"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+              <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Start Date</mat-label>
+                <input #fromDate="ngModel" [disabled]="true" [(ngModel)]="subscription.fromDate" name="fromDate"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>End Date</mat-label>
+                <input #toDate="ngModel" [disabled]="true" [(ngModel)]="subscription.toDate" name="toDate"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+  
+    
+    
+          </tr>
+  
+  
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Total Price</mat-label>
+                <input #totalPrice="ngModel" [disabled]="true" [(ngModel)]="subscription.totalPrice"
+                  name="totalPrice" matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Price Per Meter Price</mat-label>
+                <input #price="ngModel" [disabled]="true" [(ngModel)]="subscription.item.price"
+                  name="price" matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Total Area m2</mat-label>
+                <input #totalPrice="ngModel" [disabled]="true" [(ngModel)]="subscription.totalPrice"
+                  name="totalPrice" matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+  
+          </tr>
+  
+  
+          <tr>
+  
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Canceled Date</mat-label>
+                <input #cancelledDate="ngModel" [disabled]="true" [(ngModel)]="subscription.cancelledDate" name="cancelledDate"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Unit Number</mat-label>
+                <input #unitNumber="ngModel" [disabled]="true" [(ngModel)]="subscription.unitNumber" name="unitNumber"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+  
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Status</mat-label>
+                <input #status="ngModel" [disabled]="true" [(ngModel)]="subscription.status" name="status"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            
+          </tr>
+  
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Modified Date</mat-label>
+                <input #modifiedDate="ngModel" [disabled]="true" [(ngModel)]="subscription.modifiedDate" name="modifiedDate"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Modified By</mat-label>
+                <input #modifiedBy="ngModel" [disabled]="true" [(ngModel)]="subscription.modifiedBy" name="modifiedBy"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Renewed Date</mat-label>
+                <input #renewedDate="ngModel" [disabled]="true" [(ngModel)]="subscription.renewedDate" name="renewedDate"
+                  matInput autocomplete="off">
+              </mat-form-field>
+            </td>
+   
+  
+  
+          </tr>
+  
+          
+          <tr>
+  
+    
+  
+  
+  
+          </tr>
+  
+  
+        </table>
+  
+  
+  
+  
+        <div style="text-align: center;">
+          <button  mat-button (click)="onClickCancel()" class="btn btn-default">Cancel</button>
+         </div>
+  
+      </form>
+  
+  
+  
+  
+    </div>
+  </div>

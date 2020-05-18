@@ -1,0 +1,123 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div style="background: #a71c37" class="card-header card-header-danger color-white margin-bottom-16">
+      <span style="color: white;" class="card-title ">Add user </span>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">First Name</mat-label>
+          <input required [(ngModel)]="userObj.firstname" name="firstname" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Last Name</mat-label>
+          <input required [(ngModel)]="userObj.lastname" name="lastname" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">User Name</mat-label>
+          <input required [(ngModel)]="userObj.username" name="username" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Password</mat-label>
+          <input required [(ngModel)]="userObj.password" name="enabled" matInput autocomplete="off" type="password" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Email</mat-label>
+          <input required [(ngModel)]="userObj.email" name="email" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Mobile</mat-label>
+          <input required [(ngModel)]="userObj.mobile" name="mobile" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+
+      <!-- <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Reporting Manager</mat-label>
+          <input required [(ngModel)]="userObj.reportingManager" name="reportingManager" matInput autocomplete="off" />
+        </mat-form-field>
+      </div> -->
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Gender</mat-label>
+          <mat-select [(value)]="userObj.gender">
+            <mat-option value="MALE">MALE</mat-option>
+            <mat-option value="FEMALE">FEMALE</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label>Birth Date</mat-label>
+          <input [(ngModel)]="userObj.birthdate" autocomplete="false" matInput [matDatepicker]="orderspicker1" disabled
+            class="pointer" />
+          <mat-datepicker-toggle matSuffix [for]="orderspicker1"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #orderspicker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <!-- <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Id Number</mat-label>
+          <input required [(ngModel)]="userObj.idNumber" name="registeredDate" matInput autocomplete="off" />
+        </mat-form-field>
+      </div> -->
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Role</mat-label>
+          <mat-select required [(ngModel)]="role">
+            <mat-option *ngFor="let p of roles" [value]="p">
+              {{ p.displayName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12" *ngIf="privileges.length > 0">
+        <p class="popup-table-head text-center">User Privileges</p>
+        <div class="row">
+          <div class="col-xs-12 col-md-4" *ngFor="let item of privileges">
+            <p *ngIf="item.isHeader" class="head">
+              {{ item.name }}
+            </p>
+            <mat-checkbox [(ngModel)]="item.checked" *ngIf="!item.isHeader"
+              [style.visibility]="item.isHidden? 'hidden':'visible'">{{ item.description }}
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; ">
+      <button mat-button (click)="onClickCancel()" class="btn btn-warn">
+        Cancel
+      </button>
+      <button mat-button (click)="onClickSave()" style="background: #992630; margin:16px" class="btn btn-success"
+        [ngClass]="
+          userObj.username &&
+          userObj.password &&
+          userObj.firstname &&
+          userObj.lastname &&
+          userObj.mobile &&
+          userObj.email &&
+          role.id
+            ? ''
+            : 'disabled'
+        ">
+        Save
+      </button>
+    </div>
+  </div>
+</div>

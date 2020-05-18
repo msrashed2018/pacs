@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
@@ -15,12 +14,15 @@ import java.nio.file.WatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.almustkbal.pacs.config.DirectoryWatcherConfig;
 import com.almustkbal.pacs.events.NewDicomEvent;
 import com.almustkbal.pacs.services.DirectoryWatchService;
+import com.almustkbal.pacs.services.FileStorageService;
 import com.google.common.eventbus.EventBus;
+import com.google.common.io.Files;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,8 +36,16 @@ public class DirectoryWatchServiceImpl implements DirectoryWatchService, Runnabl
 	private WatchKey watchkey;
 	public DirectoryWatcherConfig watcherConfig = new DirectoryWatcherConfig();
 
+	public static final String DIRECTORY_WATCHER_DICOMS_BASIC_DIRECTORY = "/directory-watcher/";
+
 	@Autowired(required = true)
 	private EventBus eventBus;
+
+	@Autowired
+	private FileStorageService fileStorageService;
+
+	@Value("${files.storage.path}")
+	private String mainStoragePath;
 
 	private static final Logger LOG = LoggerFactory.getLogger(DirectoryWatchServiceImpl.class);
 
@@ -48,18 +58,19 @@ public class DirectoryWatchServiceImpl implements DirectoryWatchService, Runnabl
 
 			} else {
 				if (!config.getDirectoryPath().equals(watcherConfig.getDirectoryPath())) {
-					
-					if(Files.exists(Paths.get(config.getDirectoryPath()))) {
+
+					if (java.nio.file.Files.exists(Paths.get(config.getDirectoryPath()))) {
 						stopCurrentWatcherService();
 						this.watcherConfig = config;
 						startNewWatcherService();
-					}else {
+					} else {
 						throw new RuntimeException("Directory Path is not existing");
 					}
-					
+
 				} else {
 					this.watcherConfig = config;
-					LOG.warn(" Directory Watching is Already started on Path => " + watcherConfig.getDirectoryPath() + " ....");
+					LOG.warn(" Directory Watching is Already started on Path => " + watcherConfig.getDirectoryPath()
+							+ " ....");
 				}
 			}
 		} else {
@@ -107,7 +118,24 @@ public class DirectoryWatchServiceImpl implements DirectoryWatchService, Runnabl
 					String dicomFilePath = path.toString() + "\\" + event.context();
 					File convFile = new File(dicomFilePath);
 					if (!convFile.isDirectory()) {
-						NewDicomEvent dicomEvent = new NewDicomEvent(convFile);
+
+						// check if still windows on file.
+						int tryCount = 1;
+						while (!convFile.renameTo(convFile)) {
+							// Cannot read from file, windows still working on it.
+							if (tryCount == 10) {
+								break;
+							}
+							Thread.sleep(10);
+						}
+
+						File dicomFile = fileStorageService.createFile(DIRECTORY_WATCHER_DICOMS_BASIC_DIRECTORY,
+								convFile.getName(), true);
+
+						LOG.info("dicomFile = " + dicomFile.getPath());
+						LOG.info("convFile = " + convFile.getPath());
+						Files.move(convFile, dicomFile);
+						NewDicomEvent dicomEvent = new NewDicomEvent(dicomFile);
 						eventBus.post(dicomEvent);
 					} else {
 
@@ -122,6 +150,8 @@ public class DirectoryWatchServiceImpl implements DirectoryWatchService, Runnabl
 			LOG.error(e.getMessage(), e);
 		} catch (ClosedWatchServiceException e) {
 			LOG.warn(" Watching Service has been closed ");
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
 		}
 
 	}

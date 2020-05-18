@@ -16,5 +16,5 @@ public class DirectoryWatcherConfig {
 	private boolean enabled;
 	private String directoryPath;
 	private boolean indexZipFilesEnabled;
-	private boolean saveThumbnailEnabled;
+//	private boolean saveThumbnailEnabled;
 }

@@ -1,38 +1,37 @@
 package com.almustkbal.pacs.services;
 
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.almustkbal.pacs.dto.TagDTO;
-import com.almustkbal.pacs.entities.Equipment;
-import com.almustkbal.pacs.entities.Instance;
-import com.almustkbal.pacs.entities.Patient;
-import com.almustkbal.pacs.entities.Series;
-import com.almustkbal.pacs.entities.Study;
-import com.almustkbal.pacs.server.DicomReader;
+import com.almustkbal.pacs.dicom.commands.DicomFilter;
+import com.almustkbal.pacs.domain.Patient;
 
 public interface DicomService {
 
-	Page<Patient> getPatients(String patientName, String gender, String patientId, String instituitionName,
-			String physician, List<String> modalities, Date dateFrom, Date dateTo, Pageable pageable);
+	Page<Patient> getPatients(DicomFilter dicomFilter, Pageable pageable);
 
-	Patient buildEntities(DicomReader reader, boolean save);
+	Patient buildAndSaveEntities(File dicomFile);
 
-	Patient buildPatient(DicomReader reader, boolean save);
+	Patient buildEntities(File dicomFile) throws IOException;
 
-	Study buildStudy(DicomReader reader, Patient patient, boolean save);
+//	Patient buildPatient(DicomReader reader);
+//
+//	Study buildStudy(DicomReader reader, Patient patient);
+//
+//	Series buildSeries(DicomReader reader, Study study);
+//
+//	Equipment buildEquipment(DicomReader reader, Series series);
+//
+//	Instance buildInstance(DicomReader reader, Series series, boolean save);
 
-	Series buildSeries(DicomReader reader, Study study, boolean save);
+	void mergePatient(String patientId, List<String> patientIds);
 
-	Equipment buildEquipment(DicomReader reader, Series series, boolean save);
+	void deletePatient(String pkTBLPatientID);
 
-	Instance buildInstance(DicomReader reader, Series series, boolean save);
-
-	void deletePatient(Long pkTBLPatientID);
-
-	List<TagDTO> getDicomTags(DicomReader reader);
+//	List<TagDTO> getDicomTags(DicomReader reader);
 
 }

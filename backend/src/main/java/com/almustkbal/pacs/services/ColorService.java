@@ -2,7 +2,7 @@ package com.almustkbal.pacs.services;
 
 import org.springframework.data.domain.Pageable;
 
-import com.almustkbal.pacs.entities.Color;
+import com.almustkbal.pacs.domain.Color;
 
 import org.springframework.data.domain.Page;
 

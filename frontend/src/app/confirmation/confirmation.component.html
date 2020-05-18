@@ -1,0 +1,19 @@
+<div class="dialogcontainer">
+  <div mat-dialog-content>
+    <p>{{msg}}</p>
+
+    <mat-list  *ngIf="msgList">
+      <mat-list-item *ngFor="let m of msgList">
+        <p matLine> {{m}} </p>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div mat-dialog-actions class="actionsContainer">
+    <button mat-button (click)="onNoClick('false')" class="btn btn-warn">
+      Cancel
+    </button>
+    <button mat-button (click)="onNoClick('true')" class="btn btn-success">
+      Ok
+    </button>
+  </div>
+</div>

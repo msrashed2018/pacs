@@ -1,0 +1,200 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div
+      style="background: #a71c37"
+      class="card-header card-header-danger color-white margin-bottom-16"
+    >
+      <span
+        style="color: white;"
+        *ngIf="data.permission !== 'justView'"
+        class="card-title "
+        >Add New Project
+      </span>
+      <span
+        style="color: white;"
+        *ngIf="data.permission === 'justView'"
+        class="card-title "
+        >Project</span
+      >
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Project Name</mat-label>
+          <input
+            #projectName="ngModel"
+            [disabled]="data.permission === 'justView'"
+            required
+            [(ngModel)]="project.name"
+            name="projectName"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">اسم المشروع</mat-label>
+          <input
+            #projectNameAr="ngModel"
+            [disabled]="data.permission === 'justView'"
+            required
+            [(ngModel)]="project.nameAr"
+            name="projectNameAr"
+            matInput
+            class="textRight"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Description </mat-label>
+          <input
+            #projectDesc="ngModel"
+            [disabled]="data.permission === 'justView'"
+            [(ngModel)]="project.description"
+            name="projectDesc"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">الوصف</mat-label>
+          <input
+            [(ngModel)]="project.descriptionAr"
+            [disabled]="data.permission === 'justView'"
+            name="projectDescAr"
+            matInput
+            class="textRight"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Address</mat-label>
+          <textarea
+            #projectAdd="ngModel"
+            [disabled]="data.permission === 'justView'"
+            [(ngModel)]="project.address"
+            name="projectAdd"
+            matInput
+            placeholder="Ex. 100 Main St"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-form-field dir="rtl" class="textRight">
+          <mat-label class="popup-table-head">العنوان</mat-label>
+          <textarea
+            [(ngModel)]="project.addressAr"
+            [disabled]="data.permission === 'justView'"
+            name="projectAddAr"
+            matInput
+            class="textRight"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="permission != 'add'">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Number Of Units</mat-label>
+          <input
+            #projectUnits="ngModel"
+            required
+            [disabled]="true"
+            [(ngModel)]="project.allUnitsCount"
+            name="projectUnits"
+            matInput
+            maxlength="5"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12" [ngClass]="permission != 'add' ? 'col-md-4':'col-md-12'">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Active Units</mat-label>
+          <input
+            #projectUnits="ngModel"
+            [disabled]="data.permission === 'justView'"
+            [(ngModel)]="project.activeUnitsCount"
+            name="projectUnits"
+            matInput
+            maxlength="5"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="permission != 'add'">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Registered Units Count</mat-label>
+          <input
+            #projectUnits="ngModel"
+            required
+            [disabled]="true"
+            [(ngModel)]="project.registeredUnitsCount"
+            name="projectUnits"
+            matInput
+            maxlength="5"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <mat-slide-toggle
+          class="example-margin"
+          name="sw"
+          [checked]="project.securityEnabled"
+          [(ngModel)]="project.securityEnabled"
+          [disabled]="data.permission === 'justView'"
+        >
+          Enable Security
+        </mat-slide-toggle>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-slide-toggle
+          class="example-margin"
+          name="s"
+          [checked]="project.subscriptionEnabled"
+          [(ngModel)]="project.subscriptionEnabled"
+          [disabled]="data.permission === 'justView'"
+        >
+          Enable Subscription
+        </mat-slide-toggle>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-slide-toggle
+          class="example-margin"
+          name="sws"
+          [checked]="project.homeServicesEnabled"
+          [(ngModel)]="project.homeServicesEnabled"
+          [disabled]="data.permission === 'justView'"
+        >
+          Enable Home Service
+        </mat-slide-toggle>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <mat-slide-toggle
+          class="example-margin"
+          name="sws"
+          [checked]="project.enabled"
+          [(ngModel)]="project.enabled"
+          [disabled]="data.permission === 'justView'"
+        >
+          Enabled Project
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <button mat-button (click)="onClickCancel()" class="btn btn-warn">
+        Cancel
+      </button>
+      <button
+        mat-button
+        *ngIf="data.permission !== 'justView'"
+        (click)="saveProject()"
+        style="background: #992630; margin:16px"
+        class="btn btn-success "
+        [ngClass]="project.name && project.nameAr ? '' : 'disabled'"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>

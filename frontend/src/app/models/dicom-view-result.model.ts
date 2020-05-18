@@ -7,9 +7,4 @@ import { Instance } from './instance.model';
 
 export class DicomViewResult {
     patient: Patient;
-    study: Study;
-    series: Series;
-    equipment: Equipment;
-    instance: Instance;
-    allTags: Tag[]
 }

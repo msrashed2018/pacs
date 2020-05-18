@@ -1,0 +1,107 @@
+/* You can add global styles to this file, and also import other style files */
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  -webkit-border-radius: 200px;
+  -moz-border-radius: 200px;
+  border-radius: 200px;
+  overflow: hidden;
+  margin: 10px auto;
+  box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.15);
+  border: 4px solid rgba(204, 204, 204, 0.12);
+}
+.alert {
+  display: none;
+  color: #fff;
+  text-align: center;
+  padding: 16px;
+  position: absolute;
+  top: 0;
+  width: 90%;
+  z-index: 10;
+  margin: 16px auto;
+  right: 0;
+  left: 0;
+  z-index: 10000;
+}
+
+.alert-success
+{
+  background: #66a604 !important;
+}
+
+.spinner {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  width: 100%;
+  left: 0;
+  opacity: 0.5;
+  z-index: 100000;
+  display: none;
+}
+
+.spinner-img {
+  text-align: center;
+  margin-top: 20%;
+}
+
+.color-white {
+  color: white;
+}
+
+.margin-bottom-16 {
+  margin-bottom: 16px;
+}
+
+.popup-table-head {
+  color: black;
+  font-size: large;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: #a71c38 !important;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #ffffff !important;
+}
+
+.refreshImg {
+  cursor: pointer;
+  width: 30px;
+  /* opacity: 0.8; */
+}
+
+.refreshBtn {
+  margin: 7px;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.textRight {
+  text-align: right !important;
+}
+
+.textCenter {
+  text-align: center !important;
+}
+
+.text-primary {
+  color: #a71c38 !important;
+}
+
+.mat-dialog-container {
+  overflow-x: scroll;
+  max-height: 500px !important;
+}
+
+.popup-table-head {
+  text-align: center !important;
+}

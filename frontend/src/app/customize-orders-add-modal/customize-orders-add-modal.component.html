@@ -1,0 +1,144 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div style="background: #a71c37" class="card-header card-header-danger color-white margin-bottom-16">
+            <span *ngIf="orderDetails.status === 'PENDING'" style="color: white;">
+                Assign Technician
+            </span>
+            <span *ngIf="orderDetails.status === 'ASSIGNED'" style="color: white;">
+                Complete Order
+            </span>
+            <span *ngIf="orderDetails.status === 'DONE'" style="color: white;">
+                RollBack Order
+            </span>
+            <span *ngIf="orderDetails.status === 'CANCELLED'" style="color: white;">
+                Order Details
+            </span>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <mat-form-field>
+                    <mat-label class="popup-table-head"> Reference</mat-label>
+                    <input [(ngModel)]="orderDetails.customizedServiceId" name="customizedServiceId" disabled="disabled"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <mat-form-field>
+                    <mat-label class="popup-table-head"> Project Name</mat-label>
+                    <input [(ngModel)]="orderDetails.projectName" name="projectName" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Property Number</mat-label>
+                    <input [(ngModel)]="orderDetails.unitNumber" name="unitNumber" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <mat-form-field>
+                    <mat-label class="popup-table-head"> Owner Name</mat-label>
+                    <input [(ngModel)]="orderDetails.ownerName" name="ownerName" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">ServiceTypeName</mat-label>
+                    <input [(ngModel)]="orderDetails.serviceTypeName" name="serviceTypeName" disabled="disabled"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Target Date</mat-label>
+                    <input [(ngModel)]="orderDetails.targetDate" name="targetDate" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status=='ASSIGNED' ||  orderDetails.status=='DONE'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Assigned Date</mat-label>
+                    <input [(ngModel)]="orderDetails.assignedDate" name="assignedDate" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status=='ASSIGNED' ||  orderDetails.status=='DONE'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Assigned By</mat-label>
+                    <input [(ngModel)]="orderDetails.assignedBy" name="assignedBy" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status=='ASSIGNED' ||  orderDetails.status=='DONE'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Technician Name</mat-label>
+                    <input [(ngModel)]="orderDetails.technician" name="technician" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status=='DONE'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Delivered Date</mat-label>
+                    <input [(ngModel)]="orderDetails.deliveredDate" name="deliveredDate" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status=='DONE'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Closed By</mat-label>
+                    <input [(ngModel)]="orderDetails.closedBy" name="closedBy" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status=='DONE'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Rate</mat-label>
+                    <input [(ngModel)]="orderDetails.rate" name="rate" disabled="disabled" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-4" *ngIf="orderDetails.status === 'ASSIGNED'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Price</mat-label>
+                    <input [(ngModel)]="orderDetails.price" name="price" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-12" *ngIf="orderDetails.description || orderDetails.photo">
+                <mat-label class="popup-table-head">Order Items : </mat-label><br>
+                <ul>
+                    <li *ngIf="orderDetails.description">{{orderDetails.description}}</li>
+                    <li *ngIf="orderDetails.photo && isImagLoaded" class="imageUl">
+                        <img [src]="imageToShow">
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-md-12" *ngIf="orderDetails.status=='PENDING'">
+                <mat-form-field>
+                    <mat-label class="popup-table-head">Technician Name </mat-label>
+                    <input [(ngModel)]="technicianName" name="technicianName" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-12" style="text-align: center;" *ngIf="orderDetails.status === 'DONE'">
+                <h6>Are You Want roll back status order to be assigned?</h6>
+            </div>
+            <div class="col-xs-12 col-md-12" style="text-align: center; margin-bottom: 16px;">
+                <mat-slide-toggle [(ngModel)]="sendNotification">
+                    Send Notification
+                </mat-slide-toggle>
+            </div>
+            <div class="col-xs-12 col-md-12" *ngIf="sendNotification">
+                <mat-form-field>
+                    <mat-label>Message</mat-label>
+                    <textarea [(ngModel)]="message" matInput> </textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-xs-12 col-md-12" style="text-align: center; margin-bottom: 16px;" *ngIf="sendNotification">
+                <button mat-button (click)="send()" class="btn btn-success" [disabled]="!message">Send
+                    Message</button>
+            </div>
+            <div class="col-xs-12 col-md-12" style="text-align: center;">
+                <button mat-button (click)="onClickCancel()" class="btn btn-default">Cancel</button>
+                <button *ngIf="orderDetails.status === 'PENDING'" mat-button (click)="assighOrder()"
+                    class="btn btn-success" style="margin:16px">Assign</button>
+                <button *ngIf="orderDetails.status === 'ASSIGNED'" mat-button (click)="completeOrder()"
+                    class="btn btn-success" style="margin:16px">Complete</button>
+                <button *ngIf="orderDetails.status === 'DONE'" mat-button (click)="rollBackOrder()"
+                    class="btn btn-success" style="margin:16px">RollBack</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,99 +1,231 @@
-
-<div class="" id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row row-stat">
-            <div class="col-lg-4">
-                <div class="panel panel-light noborder">
-                    <div class="panel-heading noborder">
-                        <div class="panel-icon">
-                            <img src="/assets/images/MR.png" />
-                        </div>
-                        <div class="media-body">
-                            <h5 class="md-title nomargin">Magnetic Resonance (MR)</h5>
-                            <h1 class="mt5">1,539</h1>
-                        </div><!-- media-body -->
-                        <hr>
-                        <div class="clearfix mt20">
-                            <div class="pull-left">
-                                <h5 class="md-title nomargin">Yesterday</h5>
-                                <h4 class="nomargin">53</h4>
-                            </div>
-                            <div class="pull-right">
-                                <h5 class="md-title nomargin">This Week</h5>
-                                <h4 class="nomargin">156</h4>
-                            </div>
-                        </div>
-
-                    </div><!-- panel-body -->
-                </div><!-- panel -->
-            </div><!-- col-md-4 -->
-
-            <div class="col-lg-4 col-md-6">
-                <div class="panel panel-dark noborder">
-                    <div class="panel-heading noborder">
-                        <div class="panel-icon">
-                            <img src="/assets/images/CT.png" />
-                        </div>
-                        <div class="media-body">
-                            <h5 class="md-title nomargin">Computed Tomography (CT)</h5>
-                            <h1 class="mt5">1,381</h1>
-                        </div><!-- media-body -->
-                        <hr>
-                        <div class="clearfix mt20">
-                            <div class="pull-left">
-                                <h5 class="md-title nomargin">Yesterday</h5>
-                                <h4 class="nomargin">33</h4>
-                            </div>
-                            <div class="pull-right">
-                                <h5 class="md-title nomargin">This Week</h5>
-                                <h4 class="nomargin">94</h4>
-                            </div>
-                        </div>
-
-                    </div><!-- panel-body -->
-                </div><!-- panel -->
-            </div><!-- col-md-4 -->
-
-            <div class="col-lg-4 col-md-6">
-                <div class="panel panel-darkest noborder">
-                    <div class="panel-heading noborder">
-                        <div class="panel-icon">
-                            <div class="panel-icon">
-                                <img src="/assets/images/Mammo-graphy.png" />
-                            </div>
-
-                        </div>
-                        <div class="media-body">
-                            <h5 class="md-title nomargin">Mammography</h5>
-                            <h1 class="mt5">8,102</h1>
-                        </div><!-- media-body -->
-                        <hr>
-                        <div class="clearfix mt20">
-                            <div class="pull-left">
-                                <h5 class="md-title nomargin">Yesterday</h5>
-                                <h4 class="nomargin">73</h4>
-                            </div>
-                            <div class="pull-right">
-                                <h5 class="md-title nomargin">This Week</h5>
-                                <h4 class="nomargin">234</h4>
-                            </div>
-                        </div>
-
-                    </div><!-- panel-body -->
-                </div><!-- panel -->
-            </div><!-- col-md-4 -->
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div style="text-align: right;">
+          <span>Last Refresh Time: {{ time }}</span>
+          <button (click)="getAllStatistics()" class="btn btn-success refreshBtn" style="margin: 7px;"
+            mat-raised-button>
+            <img mat-raised-button matTooltip="Refresh Data" src="assets/img/refresh1.png" class="refreshImg" />
+          </button>
         </div>
-        <div class="row">
-            <div class="col-md-12 col-lg-6">
-                <div class="white-box">
-                    <app-bar-chart></app-bar-chart>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <div class="white-box">
-                    <app-line-chart></app-line-chart>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="row">
+      
+      
+      
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.petModalityStats">
+          <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+              <!-- <i class="material-icons">3d_rotation</i> -->
+              <img src="/assets/img/MR.png" width="50px" height="50px" />
+            </div>
+            <p class="card-category">PET</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.petModalityStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.petModalityStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.petModalityStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.ctModalityStats">
+          <div class="card-header card-header-warning card-header-icon">
+            <div class="card-icon">
+              <img src="/assets/img/CT.png" width="50px" height="50px" />
+            </div>
+            <p class="card-category">CT</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.ctModalityStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.ctModalityStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.ctModalityStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.mgModalityStats">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <img src="/assets/img/Mammo-graphy.png" width="50px" height="50px" />
+            </div>
+            <p class="card-category">MG</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.mgModalityStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.mgModalityStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.mgModalityStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.dxModalityStats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <img src="/assets/img/MR.png" width="50px" height="50px" />
+            </div>
+            <p class="card-category">DX</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.dxModalityStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.dxModalityStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.dxModalityStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.dfModalityStats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <img src="/assets/img/CT.png" width="50px" height="50px" />
+            </div>
+            <p class="card-category">DF</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.dfModalityStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.dfModalityStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.dfModalityStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.patientStats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">accessibility</i>
+            </div>
+            <p class="card-category">Patients</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.patientStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.patientStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.patientStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-sm-12">
+        <div class="card card-stats value-container" *ngIf="dashboardModel && dashboardModel.studyStats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">notes</i>
+            </div>
+            <p class="card-category">Studies</p>
+            <hr />
+            <div class="row padding-horizontal">
+              <div class="col-6 textCenter">
+                <p class="title padding-vertical">Yasterday</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.studyStats.yasterday }}
+                </p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="title padding-vertical">This Week</p>
+                <p class="value textCenter">
+                  {{ dashboardModel.studyStats.lastweek }}
+                </p>
+              </div>
+            </div>
+            <p class="value text-center">
+              <span class="total">Total</span>{{ dashboardModel.studyStats.total }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      
+    </div>
+  </div>
 </div>

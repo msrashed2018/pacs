@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.almustkbal.pacs.entities.ApplicationEntity;
+import com.almustkbal.pacs.domain.ApplicationEntity;
 import com.almustkbal.pacs.services.ApplicationEntityService;
 
 @CrossOrigin(origins = "*")

@@ -2,12 +2,12 @@ package com.almustkbal.pacs.utils;
 
 import java.util.Date;
 
-import com.almustkbal.pacs.entities.Equipment;
-import com.almustkbal.pacs.entities.Instance;
-import com.almustkbal.pacs.entities.Patient;
-import com.almustkbal.pacs.entities.Radiation;
-import com.almustkbal.pacs.entities.Series;
-import com.almustkbal.pacs.entities.Study;
+import com.almustkbal.pacs.domain.Equipment;
+import com.almustkbal.pacs.domain.Instance;
+import com.almustkbal.pacs.domain.Patient;
+import com.almustkbal.pacs.domain.Radiation;
+import com.almustkbal.pacs.domain.Series;
+import com.almustkbal.pacs.domain.Study;
 
 public class DicomEntityBuilder {
 

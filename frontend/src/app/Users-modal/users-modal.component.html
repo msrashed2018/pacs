@@ -1,0 +1,189 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div
+      style="background: #a71c37"
+      class="card-header card-header-danger color-white margin-bottom-16"
+    >
+      <span style="color: white;" class="card-title "> User </span>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">First Name</mat-label>
+          <input
+            required
+            [disabled]="viewOnly"
+            [(ngModel)]="userObj.firstname"
+            name="firstname"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Last Name</mat-label>
+          <input
+            required
+            [disabled]="viewOnly"
+            [(ngModel)]="userObj.lastname"
+            name="lastname"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">User Name</mat-label>
+          <input
+            required
+            [disabled]="true"
+            [(ngModel)]="userObj.username"
+            name="username"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Email</mat-label>
+          <input
+            required
+            [disabled]="viewOnly"
+            [(ngModel)]="userObj.email"
+            name="email"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Mobile</mat-label>
+          <input
+            required
+            [disabled]="viewOnly"
+            [(ngModel)]="userObj.mobile"
+            name="mobile"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Gender</mat-label>
+          <input
+            required
+            [disabled]="true"
+            [(ngModel)]="userObj.gender"
+            name="gender"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+      <!-- <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Birth Date</mat-label>
+          <input
+            [(ngModel)]="userObj.birthdate"
+            autocomplete="false"
+            matInput
+            [matDatepicker]="orderspicker2"
+            disabled
+            class="pointer"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="orderspicker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker [disabled]="viewOnly" #orderspicker2></mat-datepicker>
+        </mat-form-field>
+      </div> -->
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">IS Enabled</mat-label>
+          <input
+            required
+            [disabled]="true"
+            [(ngModel)]="userObj.isEnabled"
+            name="enabled"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+      <!-- <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Role</mat-label>
+          <mat-select
+            required
+            [disabled]="viewOnly"
+            [(ngModel)]="role.name"
+            (selectionChange)="onRoleChange($event)"
+          >
+            <mat-option *ngFor="let p of roles" [value]="p.name">
+              {{ p.displayName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field *ngIf="userObj.registeredDate">
+          <mat-label class="popup-table-head">Registered Date</mat-label>
+          <input
+            required
+            [disabled]="true"
+            [(ngModel)]="userObj.registeredDate"
+            name="registeredDate"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-12" *ngIf="!disabledPriv">
+        <p class="popup-table-head text-center">User Privileges</p>
+        <div class="row">
+          <div
+            class="col-xs-12 col-md-4"
+            *ngFor="let item of privileges"
+            [ngClass]="viewOnly ? 'disabled' : ''"
+          >
+            <p *ngIf="item.isHeader" class="head">
+              {{ item.name }}
+            </p>
+            <mat-checkbox
+              [(ngModel)]="item.checked"
+              [disabled]="viewOnly"
+              *ngIf="!item.isHeader"
+              [style.visibility]="item.isHidden? 'hidden':'visible'"
+              >{{ item.description }}
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; ">
+      <button mat-button (click)="onClickCancel()" class="btn btn-warn">
+        Cancel
+      </button>
+      <button
+        mat-button
+        *ngIf="allowUpdate"
+        (click)="onClickSave()"
+        style="background: #992630; margin:16px"
+        class="btn btn-success"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>

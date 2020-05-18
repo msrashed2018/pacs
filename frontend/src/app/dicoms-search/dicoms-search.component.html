@@ -1,0 +1,241 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">DICOMS Search</h4>
+        <p class="card-category">Here you can find and filter Dicoms</p>
+      </div>
+
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Modality</mat-label>
+            <mat-select [(ngModel)]="filters.modalities" multiple (selectionChange)="getData()">
+              <mat-option *ngFor="let m of modalities" [value]="m.name" style="color: black;">
+                {{ m.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.patientName" placeholder="Patient Name" (keydown.enter)="getData()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.patientId" placeholder="Patient ID" (keydown.enter)="getData()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.instituitionName" placeholder="Instituition Name"
+              (keydown.enter)="getData()" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.physician" placeholder="Physician" (keydown.enter)="getData()" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="filters.gender" (selectionChange)="getData()">
+              <mat-option *ngFor="let g of genders" [value]="g.name" style="color: black;">
+                {{g.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>From Date</mat-label>
+            <input [(ngModel)]="filters.fromDate" disabled autocomplete="false" matInput
+              [matDatepicker]="fromDatePicker" (dateChange)='onFromToDateChanged()' />
+            <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #fromDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input [(ngModel)]="filters.toDate" disabled matInput [matDatepicker]="toDatePicker"
+              [min]="filters.fromDate" (dateChange)='onFromToDateChanged()' />
+            <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #toDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+
+        <div class="col-xs-3 col-md-2">
+          <mat-radio-group class="createdDate-radio-group" [(ngModel)]="createdDate" (change)='onCreatedDateChanged()'>
+            <mat-radio-button class="createdDate-radio-button" value="today">Today</mat-radio-button>
+            <mat-radio-button class="createdDate-radio-button" value="lastweek">Last Week</mat-radio-button>
+            <mat-radio-button class="createdDate-radio-button" value="lastmonth">Last Month</mat-radio-button>
+            <!-- <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
+                {{season}}
+              </mat-radio-button> -->
+          </mat-radio-group>
+        </div>
+
+
+
+
+      </div>
+
+      <div class="row" style="padding: 16px;">
+
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button (click)="getData()" class="btn btn-success" style="width:100%" mat-raised-button>
+            Search
+          </button>
+        </div>
+        <div class="col-xs-3 col-md-5" style="text-align: right;">
+          <button (click)="getData()" class="btn btn-success refreshBtn" style="margin: 7px;" mat-raised-button>
+            <img mat-raised-button matTooltip="Refresh Data" src="assets/img/refresh1.png" class="refreshImg" />
+          </button>
+          <button (click)="resetFilters()" class="btn btn-success" mat-raised-button>
+            Reset
+          </button>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="card-body">
+        <div class="table table-hover table-fixed" style="direction: ltr">
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" class="table" id="patients-table" matSort>
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="patientID">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Patient ID
+                </th>
+                <td mat-cell *matCellDef="let element" class="pointer " (click)="openViewDialog(element)">
+                  {{ element.patientID }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="patientName">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Patient Name
+                </th>
+                <td mat-cell *matCellDef="let element" class="pointer " (click)="openViewDialog(element)">
+                  {{ element.patientName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="sex">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Sex
+                </th>
+                <td mat-cell *matCellDef="let element" class="pointer " (click)="openViewDialog(element)">
+                  {{ element.patientSex }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="birthday">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Birthday
+                </th>
+                <td mat-cell *matCellDef="let element" class="pointer " (click)="openViewDialog(element)">
+                  {{ element.patientBirthday }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Age
+                </th>
+                <td mat-cell *matCellDef="let element" class="pointer " (click)="openViewDialog(element)">
+                  {{ element.patientAge }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="createdDate">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Created Date
+                </th>
+                <td mat-cell *matCellDef="let element" class="pointer " (click)="openViewDialog(element)">
+                  {{ element.createdDate }}
+                </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="merge">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Merge
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <button (click)="mergePatient(element)" class="btn btn-success" mat-raised-button>
+                    Merge
+                  </button>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="exportExcel">
+                <th mat-header-cell *matHeaderCellDef class="text-primary textCenter" style="font-weight: bold"
+                  mat-sort-header>
+                  Export
+                </th>
+
+                <td mat-cell *matCellDef="let element" class="pointer ">
+                  <i class="fa fa-file-excel-o fa_custom fa-3x" aria-hidden="true" (click)="exportPatient(element)"></i>
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <div>
+              <app-pagination [currentPage]="filters.page" [totalPage]="totalPages" (pageChange)="pagination($event)"
+                (sizeChange)="onPageChange($event)" (exportData)="export()" showExportData="{{
+                          patients && patients.length > 0 ? 'true' : 'false'
+                        }}"></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

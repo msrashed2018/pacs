@@ -1,0 +1,106 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div style="background: #a71c37" class="card-header card-header-danger">
+                <h4 class="card-title ">Dicoms Uploader</h4>
+                <p class="card-category">Here you can upload Dicom Files</p>
+            </div>
+
+            <div class="card-body">
+
+
+                <div class="col-md-8">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-3 control-label" for="form-control-22"><b
+                                        style="font-size: 15pt;">Dicom
+                                        files</b></label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Choose file...">
+                                        <span class="input-group-btn">
+                                            <label style="background-color: #a71c38; color: white;" class="btn">
+                                                <input ng2FileSelect [uploader]="uploader" multiple type="file"
+                                                    accept="*" name="file" (click)="onUploadBtnClicked($event)"
+                                                    (change)="uploadSubmit($event)">
+                                                upload
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <p class="help-block">
+                                        <small *ngIf="!viewingDicom">Click the button next to the input field.</small>
+                                        <small *ngIf="viewingDicom">viewing dicom file : {{dicomFile.name}}</small>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+
+            </div>
+
+
+
+
+            <div class="card-body">
+
+                    <table class="table table-responsive-sm table-hover table-outline mb-0">
+                        <thead class="thead-light">
+                          <tr>
+                            <th width="5%" class="text-center">#</th>
+                            <th width="40%" class="text-center">File</th>
+                            <th width="35%" class="text-center">Uploading</th>
+                            <th width="20%" class="text-center">View</th>
+                            <!-- <th class="text-center"><a class="study-action-icon svg-icon-eye-h"></a></th> -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor=" let fileName of fileNames ; let i=index" >
+                            <td class="text-center"><b>{{i+1}}</b></td>
+                            <td class="text-center"><b>{{fileName}}</b></td>
+                            <td class="text-center">
+                              <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                                attr.aria-valuenow="{{progress[i].percentage}}" aria-valuemin="0" aria-valuemax="100"
+                                [ngStyle]="{width:progress[i].percentage+'%'}">{{progress[i].percentage}}%
+                              </div>
+                            </td>
+                            <td class="text-center">
+                              <button (click)="onViewTags(i)" class="btn btn-primary "> View <i
+                                  class="fa fa-eye"></i></button>
+                            </td>
+                            <!-- <td class="text-center">
+                              <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(patient.id)">delete
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </td> -->
+                          </tr>
+                        </tbody>
+                      </table>
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>

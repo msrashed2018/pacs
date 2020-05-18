@@ -3,12 +3,12 @@ package com.almustkbal.pacs.controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
@@ -24,9 +24,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,23 +35,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.almustkbal.pacs.components.ActiveDicoms;
+import com.almustkbal.pacs.dicom.commands.DicomFilter;
+import com.almustkbal.pacs.domain.Instance;
+import com.almustkbal.pacs.domain.Patient;
+import com.almustkbal.pacs.domain.Series;
+import com.almustkbal.pacs.domain.Study;
 import com.almustkbal.pacs.dto.DicomViewResultDTO;
-import com.almustkbal.pacs.dto.TagDTO;
-import com.almustkbal.pacs.entities.Instance;
-import com.almustkbal.pacs.entities.Patient;
-import com.almustkbal.pacs.entities.Series;
-import com.almustkbal.pacs.entities.Study;
 import com.almustkbal.pacs.repositories.InstanceRepository;
 import com.almustkbal.pacs.repositories.PatientRepository;
 import com.almustkbal.pacs.repositories.SeriesRepository;
 import com.almustkbal.pacs.repositories.StudyRepository;
-import com.almustkbal.pacs.server.DicomReader;
 import com.almustkbal.pacs.services.DicomService;
 import com.almustkbal.pacs.services.DirectoryWatchService;
-import com.almustkbal.pacs.utils.DateUtils;
-import com.google.common.eventbus.EventBus;
+import com.almustkbal.pacs.services.FileStorageService;
 
-@CrossOrigin(origins = "*")
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class DicomController extends AbstractController {
 
@@ -59,11 +59,18 @@ public class DicomController extends AbstractController {
 
 	private static final String JPG_EXT = ".jpg";
 
-	@Value("${pacs.storage.image}")
-	private String pacsImageStoragePath;
+//	@Value("${pacs.storage.image}")
+//	private String pacsImageStoragePath;
 
-	@Value("${pacs.storage.dcm}")
-	private String pacsDcmStoragePath;
+	@Value("${files.storage.path}")
+	private String mainStoragePath;
+
+	public static final String UPLOADED_DICOMS_BASIC_DIRECTORY = "/dicom-uploader";
+
+	public static final String DICOM_FILE_NAME = "dicom";
+
+	@Autowired
+	private FileStorageService fileStorageService;
 
 	@Autowired
 	PatientRepository patientRepository;
@@ -86,8 +93,8 @@ public class DicomController extends AbstractController {
 	@Autowired
 	DirectoryWatchService directoryWatchService;
 
-	@Autowired(required = true)
-	private EventBus eventBus;
+//	@Autowired(required = true)
+//	private EventBus eventBus;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -96,73 +103,65 @@ public class DicomController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/dicoms/search", method = RequestMethod.GET)
-	public Page<Patient> searchDicom(
-			@RequestParam(name = "modality", defaultValue = "", required = true) List<String> modalities,
-			@RequestParam(name = "patientName", defaultValue = "", required = false) String patientName,
-			@RequestParam(name = "gender", defaultValue = "", required = false) String gender,
-			@RequestParam(name = "patientId", defaultValue = "", required = false) String patientId,
-			@RequestParam(name = "instituitionName", defaultValue = "", required = false) String instituitionName,
-			@RequestParam(name = "physician", defaultValue = "", required = false) String physician,
-			@RequestParam(name = "dateFrom", required = false) String dateFrom,
-			@RequestParam(name = "dateTo", required = false) String dateTo, Pageable pageable) {
-
-//		System.out.println("patientName = "+patientName);
-//		System.out.println("gender = "+gender);
-//		System.out.println("patientId = "+patientId);
-//		System.out.println("instituitionName = "+instituitionName);
-//		System.out.println("physician = "+physician);
-//		System.out.println("modalities = "+modalities);
-//		System.out.println("dateFrom = "+dateFrom);
-//		System.out.println("dateTo = "+dateTo);
-		Calendar start = Calendar.getInstance();
-		Calendar end = Calendar.getInstance();
-
-		if (dateTo != null && dateFrom != null) {
-
-			try {
-				DateUtils.formatDates(start, end, dateFrom, dateTo);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-
-		} else {
-			start.add(Calendar.YEAR, -100);
-		}
-
-		return dicomService.getPatients(patientName, gender, patientId, instituitionName, physician, modalities,
-				start.getTime(), end.getTime(), pageable);
-
+	public Page<Patient> searchDicom(DicomFilter dicomFilter, Pageable pageable) {
+		return dicomService.getPatients(dicomFilter, pageable);
 	}
 
-	@PostMapping("/dicoms/upload")
-	public ResponseEntity<DicomViewResultDTO> handleDicomFileUpload(@RequestParam("file") MultipartFile multipart,
-			@RequestParam("save") boolean save) {
+	@PostMapping("/dicoms/view")
+	public ResponseEntity<DicomViewResultDTO> viewDicom(@RequestParam("file") MultipartFile multipart) {
 		DicomViewResultDTO dicomViewResultDTO = new DicomViewResultDTO();
-		Patient patient = null;
-		List<TagDTO> tags = new ArrayList<TagDTO>();
+		Patient patient = new Patient();
 		try {
-			File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + multipart.getOriginalFilename());
-			multipart.transferTo(convFile);
-//			
-//			NewDicomEvent dicomEvent = new NewDicomEvent(convFile);
-//			eventBus.post(dicomEvent);
 
-			DicomReader reader = new DicomReader(convFile);
+//			File convFile = new File(mainStoragePath + "/" + multipart.getOriginalFilename());
 
-			LOG.info("Active Dicoms:{} Received Patient Name:{} ID:{} Age:{} Sex:{} ", activeDicoms.toString(),
-					reader.getPatientName(), reader.getPatientID(), reader.getPatientAge(), reader.getPatientSex());
-			synchronized (dicomService) {
-				patient = dicomService.buildEntities(reader, save);// lets build our dicom database entities
+			Path filepath = Paths.get(mainStoragePath, multipart.getOriginalFilename());
+			try (OutputStream os = Files.newOutputStream(filepath)) {
+				os.write(multipart.getBytes());
 			}
-//			tags = dicomService.getDicomTags(reader);
-//			dicomViewResultDTO.setAllTags(tags);
+
+//			multipart.transferTo(convFile);
+
+//			DicomReader reader = new DicomReader(filepath.toFile());
+//			String dicomFileName = reader.getSOPInstanceUID() + ".dcm";
+
+			patient = dicomService.buildEntities(filepath.toFile());
 			dicomViewResultDTO.setPatient(patient);
+			filepath.toFile().delete();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return new ResponseEntity<DicomViewResultDTO>(dicomViewResultDTO, HttpStatus.OK);
+	}
+
+	@PostMapping("/dicoms/upload")
+	public ResponseEntity<DicomViewResultDTO> uploadDicom(@RequestParam("file") MultipartFile multipart) {
+		DicomViewResultDTO dicomViewResultDTO = new DicomViewResultDTO();
+		boolean isFileSaved = false;
+		Patient patient = null;
+		File dicomFile = null;
+		try {
+
+			dicomFile = fileStorageService.storeFile(UPLOADED_DICOMS_BASIC_DIRECTORY, multipart, DICOM_FILE_NAME, true);
+			isFileSaved = true;
+
+			synchronized (dicomService) {
+				patient = dicomService.buildAndSaveEntities(dicomFile);// lets build our dicom database entities
+			}
+			dicomViewResultDTO.setPatient(patient);
+
+		} catch (Exception e) {
+			if (isFileSaved) {
+				dicomFile.delete();
+			}
+			throw new RuntimeException(e);
+		}
+		return new ResponseEntity<DicomViewResultDTO>(dicomViewResultDTO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/patients/merge", method = RequestMethod.PUT)
+	public void mergePatient(@RequestParam("patientID") String patientID, @RequestBody List<String> patientIds) {
+		dicomService.mergePatient(patientID, patientIds);
 	}
 
 //	@RequestMapping(value = "/patients", method = RequestMethod.GET)
@@ -170,22 +169,20 @@ public class DicomController extends AbstractController {
 //		return dicomService.getPatients(pageable);
 //	}
 
-	@RequestMapping(value = "/patients/{pkTBLPatientID}", method = RequestMethod.DELETE)
-	public void deletePatient(@PathVariable Long pkTBLPatientID) {
-		dicomService.deletePatient(pkTBLPatientID);
+	@RequestMapping(value = "/patients/{patientID}", method = RequestMethod.DELETE)
+	public void deletePatient(@PathVariable String patientID) {
+		dicomService.deletePatient(patientID);
 	}
 
 	@RequestMapping(value = "/images/{pkTBLInstanceID}", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> getImage(@PathVariable Long pkTBLInstanceID, HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
+	public ResponseEntity<byte[]> getImage(@PathVariable Long pkTBLInstanceID, HttpServletResponse response)
+			throws IOException {
 
 		java.io.File tempImage = null;
-		LOG.info("instanceRepository.findById( pkTBLInstanceID = " + pkTBLInstanceID);
 		Instance instance = instanceRepository.findByPkTBLInstanceID(pkTBLInstanceID);
-		LOG.info("instance = " + instance);
 		if (instance != null) {
-			File dicomFile = new File(pacsDcmStoragePath + "/" + instance.getMediaStorageSopInstanceUID() + ".dcm");
-
+//			File dicomFile = new File(pacsDcmStoragePath + "/" + instance.getMediaStorageSopInstanceUID() + ".dcm");
+			File dicomFile = new File(instance.getDicomFilePath());
 			// TEMP IMAGE FILE CREATION
 			Dcm2Jpg dcm2Jpg = null;
 			try {
@@ -196,8 +193,9 @@ public class DicomController extends AbstractController {
 				String newfilename = FilenameUtils.removeExtension(dicomFile.getName()) + JPG_EXT; // remove the .dcm
 																									// and assign a JPG
 																									// extension
-				tempImage = new java.io.File(pacsImageStoragePath, newfilename); // create the temporary image file
-																					// instance
+				tempImage = new java.io.File(System.getProperty("java.io.tmpdir"), newfilename); // create the temporary
+																									// image file
+				// instance
 				dcm2Jpg.convert(dicomFile, tempImage);// save the new jpeg into the .img temp folder
 				if (!tempImage.exists()) {
 					throw new Exception(); // if not exists, throw exception to log and return back
@@ -213,6 +211,7 @@ public class DicomController extends AbstractController {
 
 			if (tempImage != null) {
 				byte[] bytes = IOUtils.toByteArray(new FileInputStream(tempImage));
+				tempImage.delete();
 				return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
 			}
 

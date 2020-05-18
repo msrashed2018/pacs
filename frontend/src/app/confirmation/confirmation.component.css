@@ -1,0 +1,19 @@
+button:focus {
+  outline: 1px dotted;
+  outline: 0 !important;
+}
+
+.dialogcontainer {
+  text-align: center;
+  border-radius: 30px;
+}
+
+.dialogcontainer p {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.actionsContainer {
+  margin: auto;
+  display: table;
+}

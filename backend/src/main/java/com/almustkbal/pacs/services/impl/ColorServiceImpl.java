@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.almustkbal.pacs.entities.Color;
+import com.almustkbal.pacs.domain.Color;
 import com.almustkbal.pacs.exceptions.ResourceNotFoundException;
 import com.almustkbal.pacs.repositories.ColorRepository;
 import com.almustkbal.pacs.services.ColorService;

@@ -1,0 +1,13 @@
+tr > td {
+    padding: 10px;
+}
+
+img {
+    width: 80%;
+    height: 300px;
+}
+
+.imageUl{
+    padding: 0;
+    text-align: center;
+}

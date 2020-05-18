@@ -1,0 +1,387 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">Customized Orders</h4>
+        <p class="card-category">Here are all Orders</p>
+      </div>
+      <mat-tab-group (selectedTabChange)="tabChanged($event)">
+        <mat-tab label="Pending"> </mat-tab>
+        <mat-tab label="Assigned"> </mat-tab>
+        <mat-tab label="Completed"> </mat-tab>
+        <mat-tab label="Cancelled"> </mat-tab>
+      </mat-tab-group>
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Project Name</mat-label>
+            <mat-select
+              [(ngModel)]="filters.projects"
+              (selectionChange)="listAllOrders()"
+              multiple
+            >
+              <mat-option
+                *ngFor="let p of projects"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.unitNumber"
+              placeholder="Property Number"
+              (keydown.enter)="listAllOrders()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="filters.ownerName"
+              placeholder="Owner Name"
+              (keydown.enter)="listAllOrders()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Service Type</mat-label>
+            <mat-select
+              [(ngModel)]="filters.serviceTypes"
+              (selectionChange)="listAllOrders()"
+              multiple
+            >
+              <mat-option
+                *ngFor="let p of servicesArr"
+                [value]="p.id"
+                style="color: black;"
+              >
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>From Date</mat-label>
+            <input
+              [(ngModel)]="filters.fromDate"
+              disabled
+              autocomplete="false"
+              matInput
+              [matDatepicker]="orderspicker1"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="orderspicker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #orderspicker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input
+              [(ngModel)]="filters.toDate"
+              disabled
+              matInput
+              [matDatepicker]="orderspickerTo1"
+              [min]="filters.fromDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="orderspickerTo1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #orderspickerTo1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button
+            (click)="listAllOrders()"
+            class="btn btn-success"
+            style="width:100%"
+            mat-raised-button
+          >
+            Search
+          </button>
+        </div>
+        <div class="col-xs-6 col-md-5">
+          <div style="text-align: right;">
+            <button
+              (click)="listAllOrders()"
+              class="btn btn-success refreshBtn"
+              style="margin: 7px;"
+              mat-raised-button
+            >
+              <img
+                mat-raised-button
+                matTooltip="Refresh Data"
+                src="assets/img/refresh1.png"
+                class="refreshImg"
+              />
+            </button>
+            <button
+              (click)="restAllFilters()"
+              class="btn btn-success"
+              style="margin: 7px;"
+              mat-raised-button
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table table-hover table-fixed" style="direction: ltr">
+          <div class="mat-elevation-z8">
+            <table
+              id="orderTable"
+              mat-table
+              [dataSource]="orders"
+              class="table"
+            >
+              <!-- Position Column -->
+              <ng-container matColumnDef="ID">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Reference
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                >
+                  {{ element.customizedServiceId }}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Project">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Project Name
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.projectName }}
+                </td>
+              </ng-container>
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="TargetDate">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Target Date
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.targetDate }}
+                </td>
+              </ng-container>
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="ServiceTypeName">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Service Type
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.serviceTypeName }}
+                </td>
+              </ng-container>
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="OwnerName">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Owner Name
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.ownerName }}
+                </td>
+              </ng-container>
+
+              <!-- Position Column -->
+              <ng-container
+                matColumnDef="UserMobile"
+                *ngIf="
+                  filters.status == 'PENDING' || filters.status == 'CANCELLED'
+                "
+              >
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  User Mobile
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.ownerMobile }}
+                </td>
+              </ng-container>
+
+              <ng-container
+                matColumnDef="TechnicianName"
+                *ngIf="filters.status == 'ASSIGNED' || filters.status == 'DONE'"
+              >
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Technician Name
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.technician }}
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="PropertyNumber">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Property Number
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.unitNumber }}
+                </td>
+              </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="TotalPrice">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-primary"
+                  style="font-weight: bold"
+                >
+                  Total Price
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  (click)="openUpdateDialog(element)"
+                  class="pointer"
+                >
+                  {{ element.price }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Verify">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element" class="pointer">
+                  <div class="btnwrap">
+                    <a (click)="openUpdateDialog(element)"
+                      ><i
+                        class="material-icons perform-edit"
+                        title="Edit"
+                        style="cursor: pointer"
+                        >edit</i
+                      ></a
+                    >
+                    <a
+                      ><i
+                        class="material-icons perform-edit"
+                        title="Edit"
+                        style="cursor: default;opacity: 0.6;"
+                        *ngIf="element.photo"
+                        mat-raised-button
+                        matTooltip="This item have images"
+                        >attach_file</i
+                      ></a
+                    >
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="exportDisplayedColumns"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: exportDisplayedColumns"
+              ></tr>
+            </table>
+
+            <div>
+              <app-pagination
+                [currentPage]="this.filters.page"
+                [totalPage]="this.totalPages"
+                (pageChange)="pagination($event)"
+                (sizeChange)="onPageChange($event)"
+                (exportData)="export()"
+                showExportData="{{
+                  orders && orders.length > 0 ? 'true' : 'false'
+                }}"
+              ></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

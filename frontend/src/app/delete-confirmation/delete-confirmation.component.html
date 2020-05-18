@@ -1,0 +1,13 @@
+<div class="dialogcontainer">
+  <div mat-dialog-content>
+    <p>Are you sure you want to delete this item?</p>
+  </div>
+  <div mat-dialog-actions class="actionsContainer">
+    <button mat-button (click)="onNoClick('false')" class="btn btn-warn">
+      Cancel
+    </button>
+    <button mat-button (click)="onNoClick('true')" class="btn btn-success">
+      Delete
+    </button>
+  </div>
+</div>

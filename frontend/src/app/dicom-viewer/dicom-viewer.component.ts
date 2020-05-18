@@ -1,17 +1,17 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Patient } from 'app/models/patient.model';
-import { DicomsService } from 'app/dicoms/dicoms.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { DicomViewResult } from 'app/models/dicom-view-result.model';
+import { DicomTagsComponent } from 'app/shared/dicom-tags/dicom-tags.component';
+import { DicomsService } from 'app/services/dicoms.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dicom-viewer',
   templateUrl: './dicom-viewer.component.html',
-  styleUrls: ['./dicom-viewer.component.scss']
+  styleUrls: ['./dicom-viewer.component.css']
 })
 export class DicomViewerComponent implements OnInit {
-image='https://picsum.photos/900/500/?random'
   dicomFile: File;
   viewingDicom: boolean;
   progress: { percentage: number } = { percentage: 0 }
@@ -22,7 +22,8 @@ image='https://picsum.photos/900/500/?random'
   constructor(
     router: Router,
     private route: ActivatedRoute,
-    private dicomService: DicomsService) {
+    private dicomService: DicomsService,
+    public dialog: MatDialog) {
 
   }
 
@@ -47,9 +48,8 @@ image='https://picsum.photos/900/500/?random'
             this.progress.percentage = Math.round(100 * result.loaded / result.total);
 
           } else if (result instanceof HttpResponse) {
-            // console.log("file uploaded success");
             this.data = result.body as DicomViewResult
-            
+            this.openDicomTagsDialog(this.data);
           }
 
         },
@@ -59,6 +59,21 @@ image='https://picsum.photos/900/500/?random'
       )
 
     }
+  }
+
+
+
+  openDicomTagsDialog(dicom: DicomViewResult): void {
+
+    const dialogRef = this.dialog.open(DicomTagsComponent, {
+      width: '90%',
+      height: '90%',
+      data: dicom
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
 }

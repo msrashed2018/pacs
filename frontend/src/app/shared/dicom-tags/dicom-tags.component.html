@@ -1,0 +1,30 @@
+<div *ngIf="data" class="center" style="width: 100%;">
+  <mat-tab-group animationDuration="500ms" [(selectedIndex)]="selectedTabIndex" mat-stretch-tabs>
+    <mat-tab label="Patient">
+      <br>
+      <app-patient [value]="data.patient"></app-patient>
+    </mat-tab>
+    <mat-tab label="Study">
+      <br>
+      <app-study [value]="data.patient.studies[0]"></app-study>
+    </mat-tab>
+    <mat-tab label="Series">
+      <br>
+      <app-series [value]="data.patient.studies[0].serieses[0]"></app-series>
+    </mat-tab>
+    <mat-tab label="Instance">
+      <br>
+      <app-instance [value]="data.patient.studies[0].serieses[0].instances[0]"></app-instance>
+    </mat-tab>
+    <mat-tab label="Equipment">
+      <br>
+      <app-equipment [value]="data.patient.studies[0].serieses[0].equipment"></app-equipment>
+    </mat-tab>
+    <mat-tab label="Image">
+      <br>
+      <ng-template matTabContent>
+        <app-image [value]="data.patient.studies[0].serieses[0].instances[0].image"></app-image>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,49 @@
+<div class="paginationContainer">
+  <img
+    mat-raised-button
+    matTooltip="Export data as ExcelSheet"
+    src="assets/img/exports.jpeg"
+    class="directionImg"
+    (click)="export()"
+    *ngIf="showExportData == 'true' ? true : false"
+  />
+
+  <p class="ItemLabel">Items per page:</p>
+  <form [formGroup]="Pages">
+    <mat-form-field class="full-width pagination-field">
+      <mat-select
+        formControlName="Pages"
+        (selectionChange)="onSizeChange($event)"
+      >
+        <mat-option *ngFor="let item of patientCategories" [value]="item">
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <p class="ItemLabel">{{ currentPage + 1 }} of {{ totalPage }}</p>
+  <img
+    src="assets/img/first.png"
+    class="directionImg"
+    (click)="pageClick('first')"
+    [ngClass]="currentPage == 0 ? 'disable' : ''"
+  />
+  <img
+    src="assets/img/back.png"
+    class="directionImg"
+    (click)="pageClick('back')"
+    [ngClass]="currentPage == 0 ? 'disable' : ''"
+  />
+  <img
+    src="assets/img/next.png"
+    class="directionImg"
+    (click)="pageClick('next')"
+    [ngClass]="currentPage == totalPage - 1 ? 'disable' : ''"
+  />
+  <img
+    src="assets/img/last.png"
+    class="directionImg"
+    (click)="pageClick('last')"
+    [ngClass]="currentPage == totalPage - 1 ? 'disable' : ''"
+  />
+</div>

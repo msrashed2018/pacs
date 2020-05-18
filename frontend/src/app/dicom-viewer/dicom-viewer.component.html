@@ -1,89 +1,46 @@
-<div class="" id="page-wrapper">
-  <div class="container-fluid">
-    <div class="row row-stat">
-      <div class="col-sm-12">
-
-        <div class="panel panel-default">
-          <div class="panel panel-default">
-            <div class="panel-heading panel-heading-divider">DICOM Viewer
-              <span class="panel-subtitle">View DICOM tags of a single file</span>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div style="background: #a71c37" class="card-header card-header-danger">
+                <h4 class="card-title ">Dicom Viewer</h4>
+                <p class="card-category">Here you can upload and view dicom file</p>
             </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-8">
-                  <form class="form-horizontal">
-                    <div class="form-group">
-                      <div class="row">
-                        <label class="col-sm-3 control-label" for="form-control-22"><b style="font-size: 15pt;">Dicom
-                            file</b></label>
-                        <div class="col-sm-9">
-                          <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Choose file...">
-                            <span class="input-group-btn">
-                              <label class="btn btn-primary file-upload-btn">
-                                <input class="file-upload-input" type="file" name="file"
-                                  (click)="onUploadBtnClicked($event)" (change)="onDicomFileSelected($event)">
-                                <i class="icon mdi mdi-upload"></i>
-                              </label>
-                            </span>
-                          </div>
-                          <p class="help-block">
-                            <small *ngIf="!viewingDicom">Click the button next to the input field.</small>
-                            <small *ngIf="viewingDicom">viewing dicom file : {{dicomFile.name}}</small>
-                          </p>
-                        </div>
-                      </div>
 
-                    </div>
-                  </form>
+            <div class="card-body">
+                <div class="col-md-8">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-3 control-label" for="form-control-22"><b
+                                        style="font-size: 15pt;">Dicom
+                                        file</b></label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" placeholder="Choose file...">
+                                            <label style="background-color: #a71c38; color: white;" class="btn  ">
+                                                <input   type="file" name="file"
+                                                    (click)="onUploadBtnClicked($event)"
+                                                    (change)="onDicomFileSelected($event)">
+                                                upload
+                                            </label>
+                                    </div>
+                                    <p class="help-block">
+                                        <small *ngIf="!viewingDicom">Click the button next to the input field.</small>
+                                        <small *ngIf="viewingDicom">viewing dicom file : {{dicomFile.name}}</small>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
                 </div>
                 <div *ngIf="viewingDicom" class="progress" style="width: 100%;">
-                  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-                    attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
-                    [ngStyle]="{width:progress.percentage+'%'}">
-                    {{progress.percentage}}%</div>
-
+                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                        attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
+                        [ngStyle]="{width:progress.percentage+'%'}">
+                        {{progress.percentage}}%</div>
                 </div>
-                <div *ngIf="data" class="center" style="width: 100%;">
-                  <mat-tab-group animationDuration="500ms" [(selectedIndex)]="selectedTabIndex" mat-stretch-tabs>
-                    <!-- <mat-tab  label="Tags">
-                      <br>
-                      <app-all-tags [tags]="data.allTags"></app-all-tags>
-                    </mat-tab> -->
-                    <mat-tab label="Patient">
-                      <br>
-                      <app-patient [value]="data.patient"></app-patient>
-                    </mat-tab>
-                    <mat-tab label="Study">
-                      <br>
-                      <app-study [value]="data.patient.studies[0]"></app-study>
-                    </mat-tab>
-                    <mat-tab label="Series">
-                      <br>
-                      <app-series [value]="data.patient.studies[0].serieses[0]"></app-series>
-                    </mat-tab>
-                    <mat-tab label="Instance">
-                      <br>
-                      <app-instance [value]="data.patient.studies[0].serieses[0].instances[0]"></app-instance>
-                    </mat-tab>
-                    <mat-tab label="Equipment">
-                      <br>
-                      <app-equipment [value]="data.patient.studies[0].serieses[0].equipment"></app-equipment>
-                    </mat-tab>
-                    <mat-tab label="Image">
-                      <br>
-                      <ng-template matTabContent>
-                        <app-image [value]="data.patient.studies[0].serieses[0].instances[0].image"></app-image>
-                      </ng-template>
-                    </mat-tab>
-                  </mat-tab-group>
-
-
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>

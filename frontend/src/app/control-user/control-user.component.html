@@ -1,0 +1,199 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">Users</h4>
+        <p class="card-category">Here are all Users</p>
+      </div>
+      <div class="row" style="padding: 16px;">
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.firstAndLastName" placeholder="Full Name"
+              (keydown.enter)="listAllUsers()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.email" placeholder="Email" (keydown.enter)="listAllUsers()" />
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.mobile" placeholder="Mobile" (keydown.enter)="listAllUsers()" />
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <input matInput [(ngModel)]="filters.reportingManager" placeholder="Reporting Manager"
+              (keydown.enter)="listAllUsers()" />
+          </mat-form-field>
+        </div> -->
+        <!-- <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Role</mat-label>
+            <mat-select [(ngModel)]="filters.role" (selectionChange)="listAllUsers()">
+              <mat-option *ngFor="let p of roles" [value]="p.id">
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Registered Date</mat-label>
+            <input [(ngModel)]="filters.registeredDate" disabled matInput [matDatepicker]="pickerTo" />
+            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+            <mat-datepicker disabled="false" #pickerTo></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xs-3 col-md-2">
+          <mat-form-field>
+            <mat-label>Is Enabled</mat-label>
+            <mat-select [(ngModel)]="filters.isEnabled" (selectionChange)="listAllUsers()">
+              <mat-option [value]="">
+                {{ "All" }}
+              </mat-option>
+              <mat-option [value]="true">
+                {{ "Yes" }}
+              </mat-option>
+              <mat-option [value]="false">
+                {{ "No" }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button (click)="listAllUsers()" class="btn btn-success" style="width:100%" mat-raised-button>
+            Search
+          </button>
+        </div>
+        <div class="col-xs-6 col-md-5">
+          <div style="text-align: right;">
+            <button (click)="listAllUsers()" class="btn btn-success refreshBtn" style="margin: 7px;" mat-raised-button>
+              <img mat-raised-button matTooltip="Refresh Data" src="assets/img/refresh1.png" class="refreshImg" />
+            </button>
+            <button (click)="resetFilter()" class="btn btn-success" style="margin: 7px;" mat-raised-button>
+              Reset
+            </button>
+            <button *ngIf="!enablePrivilages" (click)="openAddDialog()" class="btn btn-success" style="margin: 7px;"
+              mat-raised-button>
+              Add User
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <br />
+        <div class="table-responsive mat-elevation-z8">
+          <table id="user-table" mat-table [dataSource]="dataSource" class="table">
+            <ng-container matColumnDef="FirstAndLastName">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Full Name
+              </th>
+              <td (click)="openViewDialog(usr)" mat-cell *matCellDef="let usr" class="pointer">
+                <span style="cursor: pointer;">
+                  {{ usr.firstname }} {{ usr.lastname }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Email">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Email
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.email }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Username">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Username
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.username }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Mobile">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Mobile
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.mobile }}
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="ReportingManager">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Reporting Manager
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.reportingManager }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Role">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Role
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                <span *ngIf="usr.roles && usr.roles.length > 0">{{ getRoles(usr.roles) }}</span>
+                <span *ngIf="!usr.roles">-</span>
+              </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="RegisteredDate">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Registered Date
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.registeredDate }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="LastLogin">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Last Login
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.lastlogin }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isEnabled">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold">
+                Is Enable
+              </th>
+              <td mat-cell *matCellDef="let usr" (click)="openViewDialog(usr)" class="pointer">
+                {{ usr.enabled ? "Yes" : "No" }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action">
+              <th mat-header-cell *matHeaderCellDef class="text-primary" style="font-weight: bold"></th>
+              <td mat-cell *matCellDef="let user">
+                <i style="cursor: pointer; padding-right: 25px;" (click)="openUpdateDialog(user)"
+                  class="material-icons">edit</i>
+                <!-- <i style="cursor: pointer;" class="material-icons" mat-raised-button (click)="openConfirmDialog(user)">lock_open</i> -->
+                <i style="cursor: pointer;" (click)="openConfirmDialog(user)" class="material-icons"
+                  *ngIf="user.enabled" matTooltip="Disable this item">lock_open</i>
+                <i style="cursor: pointer;" (click)="openConfirmDialog(user)" class="material-icons"
+                  *ngIf="!user.enabled" matTooltip="Enable this item">lock</i>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <div>
+            <app-pagination [currentPage]="this.filters.page" [totalPage]="this.totalPages"
+              (pageChange)="pagination($event)" (sizeChange)="onPageChange($event)" (exportData)="export()"
+              showExportData="{{
+                users && users.length > 0 ? 'true' : 'false'
+              }}"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

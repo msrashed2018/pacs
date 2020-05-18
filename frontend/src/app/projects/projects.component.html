@@ -1,0 +1,284 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div style="background: #a71c37" class="card-header card-header-danger">
+        <h4 class="card-title ">Projects</h4>
+        <p class="card-category">Here are all Projects</p>
+      </div>
+      <div class="row" style="padding: 16px;">
+        <!-- <div class="col-xs-12 col-md-3 offset-md-4"> -->
+        <div class="col-xs-3 col-md-2 offset-md-4">
+          <mat-form-field>
+            <mat-label>Active Features</mat-label>
+            <mat-select
+              multiple
+              [(value)]="filter.selectedFeatures"
+              (selectionChange)="filterProjectsStatus($event)"
+            >
+              <!-- <mat-option value="all">All</mat-option> -->
+              <mat-option value="sec">Security</mat-option>
+              <mat-option value="home">Home Service</mat-option>
+              <mat-option value="sub">Subscription</mat-option>
+              <mat-option value="enabled">Enabled Projects</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-3 col-md-2 ">
+          <mat-form-field>
+            <mat-label>Not Active Features</mat-label>
+            <mat-select
+              multiple
+              [(value)]="filter.selectedFeatures_notactive"
+              (selectionChange)="filterProjectsNotStatus($event)"
+            >
+              <!-- <mat-option value="all">All</mat-option> -->
+              <mat-option value="sec">Security</mat-option>
+              <mat-option value="home">Home Service</mat-option>
+              <mat-option value="sub">Subscription</mat-option>
+              <mat-option value="enabled">Enabled Projects</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-4 offset-md-3">
+          <button
+            (click)="listAllProjects()"
+            class="btn btn-success"
+            style="width: 100%;"
+            mat-raised-button
+          >
+            Search
+          </button>
+        </div>
+        <div class="col-xs-6 col-md-5">
+          <div style="text-align: right;">
+            <button
+              (click)="listAllProjects()"
+              class="btn btn-success refreshBtn"
+              style="margin: 7px;"
+              mat-raised-button
+            >
+              <img
+                mat-raised-button
+                matTooltip="Refresh Data"
+                src="assets/img/refresh1.png"
+                class="refreshImg"
+              />
+            </button>
+            <button
+              (click)="resetFilter()"
+              class="btn btn-success"
+              style="margin: 7px;"
+              mat-raised-button
+            >
+              Reset
+            </button>
+            <button
+              mat-raised-button
+              (click)="openAddDialog()"
+              class="btn btn-success"
+              *ngIf="showAddBtn"
+            >
+              Add Project
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive mat-elevation-z8">
+          <table
+            mat-table
+            id="projects-table"
+            [dataSource]="dataSource"
+            class="table"
+          >
+            <ng-container matColumnDef="Name">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Project Name
+              </th>
+              <td
+                mat-cell
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+                *matCellDef="let project"
+              >
+                {{ project.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="NoOfUnits">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Number Of Units
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let project"
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+              >
+                {{ project.allUnitsCount }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="activeUnitsCount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Active Units Count
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let project"
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+              >
+                {{ project.activeUnitsCount }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="securityEnabled">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Enable Security
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let project"
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+              >
+                <span *ngIf="project.securityEnabled === true">
+                  Yes
+                </span>
+                <span *ngIf="project.securityEnabled !== true">
+                  No
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="subscriptionEnabled">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Enable Subscription
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let project"
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+              >
+                <span *ngIf="project.subscriptionEnabled === true">
+                  Yes
+                </span>
+                <span *ngIf="project.subscriptionEnabled !== true">
+                  No
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="homeService">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Enable Home Service
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let project"
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+              >
+                <span *ngIf="project.homeServicesEnabled === true">
+                  Yes
+                </span>
+                <span *ngIf="project.homeServicesEnabled !== true">
+                  No
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              >
+                Enabled
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let project"
+                class="pointer"
+                (click)="openUpdateDialogForView(project)"
+              >
+                <span *ngIf="project.enabled">
+                  Yes
+                </span>
+                <span *ngIf="!project.enabled">
+                  No
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-primary"
+                style="font-weight: bold"
+              ></th>
+              <td mat-cell *matCellDef="let project">
+                <i
+                  style="cursor: pointer; padding-right: 17px;"
+                  (click)="openUpdateDialog(project)"
+                  class="material-icons"
+                  >edit</i
+                >
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <div>
+            <app-pagination
+              [currentPage]="filter.page"
+              [totalPage]="totalPages"
+              (pageChange)="pagination($event)"
+              (sizeChange)="onPageChange($event)"
+              (exportData)="export()"
+              showExportData="{{
+                projects && projects.length > 0 ? 'true' : 'false'
+              }}"
+            ></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

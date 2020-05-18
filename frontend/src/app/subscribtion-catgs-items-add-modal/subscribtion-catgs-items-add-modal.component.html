@@ -1,0 +1,150 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div
+      style="background: #a71c37"
+      class="card-header card-header-danger color-white margin-bottom-16"
+    >
+      <span style="color: white;" class="card-title ">
+        Subscription Category Item
+      </span>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label>Types</mat-label>
+          <mat-select [(value)]="selected" [(ngModel)]="dataObj.type.id">
+            <mat-option
+              *ngFor="let servicetype of servicesTypes[0]"
+              [value]="servicetype.id"
+            >
+              {{ servicetype.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <!-- <mat-form-field>
+          <mat-label>Period</mat-label>
+          <input name="period" [(ngModel)]="dataObj.period" matInput />
+        </mat-form-field> -->
+        <mat-form-field>
+          <mat-label>Period</mat-label>
+          <mat-select [(value)]="dataObj.period">
+            <mat-option [value]="1">Monthly</mat-option>
+            <mat-option [value]="3">Quarterly</mat-option>
+            <mat-option [value]="6">Semi-Annual</mat-option>
+            <mat-option [value]="12">Annual</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label>Price</mat-label>
+          <input name="itemPrice" [(ngModel)]="dataObj.price" matInput />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-12">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Price description</mat-label>
+          <input
+            name="itemPriceDesc"
+            [(ngModel)]="dataObj.priceNote"
+            matInput
+            required
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-12">
+        <mat-form-field style="text-align:right" dir="rtl">
+          <mat-label class="popup-table-head">وصف للسعر</mat-label>
+          <input
+            name="itemPriceDescAr"
+            [(ngModel)]="dataObj.priceNoteAr"
+            matInput
+            required
+            style="text-align:right"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-12">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Description</mat-label>
+          <input
+            #projectDesc="ngModel"
+            required
+            [(ngModel)]="dataObj.description"
+            name="Description"
+            matInput
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-12">
+        <mat-form-field style="text-align:right" dir="rtl">
+          <mat-label class="popup-table-head">الوصف</mat-label>
+          <input
+            #projectDesc="ngModel"
+            required
+            [(ngModel)]="dataObj.descriptionAr"
+            name="DescriptionAr"
+            matInput
+            class="textRight"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xs-12 col-md-6" *ngIf="createdBy">
+        <mat-label class="popup-table-head">Created By</mat-label>
+        <p *ngIf="ItemId && showButtons" style="border-bottom: 1px solid;">
+          {{ createdBy }}
+        </p>
+      </div>
+      <div class="col-xs-12 col-md-6" *ngIf="createdDate">
+        <mat-label class="popup-table-head">Created Date</mat-label>
+        <p *ngIf="ItemId && showButtons" style="border-bottom: 1px solid;">
+          {{ createdDate }}
+        </p>
+      </div>
+      <div class="col-xs-12 col-md-6" *ngIf="modifiedBy">
+        <mat-label class="popup-table-head">Modified By</mat-label>
+        <p *ngIf="ItemId && showButtons" style="border-bottom: 1px solid;">
+          {{ modifiedBy }}
+        </p>
+      </div>
+      <div class="col-xs-12 col-md-6" *ngIf="modifiedDate">
+        <mat-label class="popup-table-head">Modified Date</mat-label>
+        <p *ngIf="ItemId && showButtons" style="border-bottom: 1px solid;">
+          {{ modifiedDate }}
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <button mat-button (click)="onClickCancel()" class="btn btn-warn">
+        Cancel
+      </button>
+      <button
+        mat-button
+        *ngIf="!ItemId && showButtons"
+        (click)="addTypeItem()"
+        style="margin:16px"
+        class="btn btn-success"
+      >
+        Add
+      </button>
+      <button
+        mat-button
+        *ngIf="ItemId && showButtons"
+        (click)="updateServiceItem()"
+        style="margin:16px"
+        class="btn btn-success"
+      >
+        Update
+      </button>
+    </div>
+  </div>
+</div>

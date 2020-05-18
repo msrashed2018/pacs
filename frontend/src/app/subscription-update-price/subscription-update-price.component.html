@@ -1,0 +1,201 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div style="background: #a71c37" class="card-header card-header-danger color-white margin-bottom-16">
+      Subscription details
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Reference</mat-label>
+          <input [disabled]="true" #subscriptionId="ngModel" required [(ngModel)]="subscription.subscriptionId"
+            name="subscriptionId" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Project Name</mat-label>
+          <input #projectName="ngModel" [disabled]="true" [(ngModel)]="subscription.projectName" name="projectName"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Property Number</mat-label>
+          <input #unitNumber="ngModel" [disabled]="true" [(ngModel)]="subscription.unitNumber" name="unitNumber"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Owner Name</mat-label>
+          <input [disabled]="true" #ownerName="ngModel" required [(ngModel)]="subscription.ownerName" name="ownerName"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Owner ID</mat-label>
+          <input #ownerIdNumber="ngModel" [disabled]="true" [(ngModel)]="subscription.ownerIdNumber"
+            name="ownerIdNumber" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Owner Mobile</mat-label>
+          <input [disabled]="true" #ownerMobile="ngModel" required [(ngModel)]="subscription.ownerMobile"
+            name="ownerMobile" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Subscription Type</mat-label>
+          <textarea #type="ngModel" [disabled]="true" [(ngModel)]="subscription.item.type.name" name="type" matInput
+            autocomplete="off">
+          </textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Subscription</mat-label>
+          <textarea [disabled]="true" [(ngModel)]="subscription.item.description" matInput
+            autocomplete="off"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Price</mat-label>
+          <textarea [disabled]="true" [(ngModel)]="subscription.item.price" matInput autocomplete="off"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="subscription.totalPrice">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Total Price</mat-label>
+          <input #totalPrice="ngModel" [disabled]="true" [(ngModel)]="subscription.totalPrice" name="totalPrice"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="subscription.totalArea != null">
+        <mat-form-field>
+          <mat-label class="popup-table-head">
+            <span *ngIf="subscription.item.type.serviceCode == 'C002'">Total Area m2</span>
+            <span *ngIf="subscription.item.type.serviceCode == 'C007'">Total Area m3</span>
+          </mat-label>
+          <input #totalArea="ngModel" [disabled]="true" [(ngModel)]="subscription.totalArea" name="totalArea" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Status</mat-label>
+          <input #status="ngModel" [disabled]="true" [(ngModel)]="subscription.status" name="status" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Request Date</mat-label>
+          <input #requestDate="ngModel" [disabled]="true" [(ngModel)]="subscription.requestDate" name="requestDate"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Start Date</mat-label>
+          <input #fromDate="ngModel" [disabled]="true" [(ngModel)]="subscription.fromDate" name="fromDate" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <mat-form-field>
+          <mat-label class="popup-table-head">End Date</mat-label>
+          <input #toDate="ngModel" [disabled]="true" [(ngModel)]="subscription.toDate" name="toDate" matInput
+            autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="subscription.cancelledDate">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Canceled Date</mat-label>
+          <input #cancelledDate="ngModel" [disabled]="true" [(ngModel)]="subscription.cancelledDate"
+            name="cancelledDate" matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="subscription.cancelReason">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Cancellation Reason</mat-label>
+          <textarea #cancelledDate="ngModel" [disabled]="true" [(ngModel)]="subscription.cancelReason"
+            name="cancelledDate" matInput autocomplete="off">
+          </textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="subscription.cancelReasonDesc">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Cancellation Description </mat-label>
+          <textarea #cancelledDate="ngModel" [disabled]="true" [(ngModel)]="subscription.cancelReasonDesc"
+            name="cancelledDate" matInput autocomplete="off"> </textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-4" *ngIf="subscription.renewedDate">
+        <mat-form-field>
+          <mat-label class="popup-table-head">Renewed Date</mat-label>
+          <input #renewedDate="ngModel" [disabled]="true" [(ngModel)]="subscription.renewedDate" name="renewedDate"
+            matInput autocomplete="off" />
+        </mat-form-field>
+      </div>
+      <div class="col-xs-6 col-md-12" *ngIf="cars.length > 0">
+        <mat-label class="popup-table-head">Car Details : </mat-label><br />
+        <ul style="margin-bottom: 16px;">
+          <li *ngFor="let item of cars; index as i">
+            <div class="row">
+              <div class="col-xs-6 col-md-3">
+                <mat-form-field>
+                  <mat-label class="popup-table-head">Car Type</mat-label>
+                  <input [disabled]="true" [(ngModel)]="item.type" matInput autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div class="col-xs-6 col-md-3">
+                <mat-form-field>
+                  <mat-label class="popup-table-head">Car Number</mat-label>
+                  <input [disabled]="true" [(ngModel)]="item.plateNumber" matInput autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div class="col-xs-6 col-md-3">
+                <mat-form-field>
+                  <mat-label class="popup-table-head">Car Color</mat-label>
+                  <input [disabled]="true" [(ngModel)]="item.color" matInput autocomplete="off" />
+                </mat-form-field>
+              </div>
+              <div class="col-xs-6 col-md-3">
+                <mat-form-field>
+                  <mat-label class="popup-table-head">Price</mat-label>
+                  <input [disabled]="true" [(ngModel)]="item.servicePrice" matInput autocomplete="off" />
+                </mat-form-field>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-12 col-md-12" style="text-align: center; margin-bottom: 16px;">
+        <mat-slide-toggle [(ngModel)]="sendNotification">
+          Send Notification
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <ion-row *ngIf="sendNotification">
+      <div class="col-xs-12 col-md-12">
+        <mat-form-field>
+          <mat-label>Message</mat-label>
+          <textarea [(ngModel)]="message" matInput> </textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 col-md-12" style="text-align: center; margin-bottom: 16px;">
+        <button mat-button (click)="send()" class="btn btn-success" [disabled]="!message">Send Message</button>
+      </div>
+    </ion-row>
+    <div style="text-align: center;">
+      <button mat-button (click)="onClickCancel()" class="btn btn-default">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

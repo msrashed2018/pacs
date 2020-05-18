@@ -1,0 +1,72 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="card">
+          <div style="background: #a71c37" class="card-header card-header-danger">
+              <h4 class="card-title ">Directory Watcher</h4>
+              <p class="card-category">Here you can configure Directory Watcher service</p>
+          </div>
+
+          <div class="card-body">
+              
+            <div style="width:100% !important;">
+              <div class="card">
+                <div class="card-body ">
+                  <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()">
+        
+                    <div class="form-group row">
+                      <label class="col-md-2 col-form-label font-weight-bold" for="enabled" style="color: #a71c38;">
+                        Enable Watching</label>
+                      <div class="col-md-4">
+                        <input [(ngModel)]="watcher.enabled" type="checkbox" name="enabled" (change)="checkValue($event)">
+                      </div>
+                    </div>
+        
+                    <div class="form-group row">
+                      <label class="col-md-2 col-form-label font-weight-bold" for="path" style="color: #a71c38;">
+                        Directory Path</label>
+                      <div class="col-md-5">
+                        <input [disabled] = "!enableChange" maxlength="200"  style="width: 100%;" [(ngModel)]="watcher.directoryPath" #path="ngModel"
+                          [ngClass]="{ 'is-invalid': f.submitted && path.invalid }" type="text" name="path" required>
+                        <div *ngIf="f.submitted && path.invalid" class="invalid-feedback">
+                          <div *ngIf="path.errors.required"> This field is required</div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="form-group row">
+                      <label class="col-md-2 col-form-label font-weight-bold" for="zipFile" style="color: #a71c38;">
+                        Index Zip Files</label>
+                      <div class="col-md-4">
+                        <input [disabled] = "!enableChange" [(ngModel)]="watcher.indexZipFilesEnabled" type="checkbox" name="zipFile">
+                      </div>
+                    </div>
+        
+                    <!-- <div class="form-group row">
+                      <label class="col-md-2 col-form-label font-weight-bold" for="saveThumbnail" style="color: #a71c38;">
+                        Save Thumbnail</label>
+                      <div class="col-md-4">
+                        <input  [disabled] = "!enableChange" [(ngModel)]="watcher.saveThumbnailEnabled" type="checkbox" name="saveThumbnail">
+                      </div>
+                    </div> -->
+        
+        
+                    <div class="card-footer">
+                      <button mat-raised-button matTooltip="Info about the action" aria-label="Button that displays a tooltip when focused or hovered over" type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i>
+                         save </button>
+                        <i *ngIf="message != ''">  {{ message}}</i>
+                    </div>
+        
+                  </form>
+                </div>
+        
+              </div>
+        
+            </div>
+
+
+
+          </div>
+      </div>
+  </div>
+</div>
+

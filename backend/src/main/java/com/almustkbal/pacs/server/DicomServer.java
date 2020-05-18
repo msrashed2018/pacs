@@ -70,9 +70,8 @@ public class DicomServer {
 			String tsuid = pc.getTransferSyntax();
 
 			// File file = new File(storageDir, ipAddress + "_" + iuid + DCM_EXT);
-			File file = new File(storageDir, iuid + DCM_EXT);
+			File file = new File(storageDir, ipAddress + "_" + iuid + DCM_EXT);
 			try {
-				LOG.info("\n\n\n\n as: {}", as);
 				storeTo(as, as.createFileMetaInformation(iuid, cuid, tsuid), data, file);
 
 				if (!file.exists()) {

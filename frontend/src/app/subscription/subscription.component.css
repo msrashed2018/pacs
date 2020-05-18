@@ -1,0 +1,68 @@
+:host .mat-form-field-flex {
+  border-bottom: 1px solid #949494;
+}
+
+.paginationContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.ItemLabel {
+  font-size: 11px;
+  color: #828282;
+  font-weight: 400;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-bottom: 20px;
+}
+
+.pagination-field {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  width: 49px;
+  margin-left: 5px;
+  margin-right: 20px;
+  font-size: 13px;
+}
+
+.directionImg {
+  width: 30px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.disable {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.input-class {
+  text-indent: 5px;
+  width: 45%;
+  height: 30px;
+  border: 0.55px solid grey;
+  border-radius: 10px;
+}
+
+.customizeDate {
+  font-size: 13px;
+  padding-left: 0px;
+  padding-right: 0;
+  text-align: center;
+}
+.input-class {
+  text-indent: 5px;
+  width: 45%;
+  height: 30px;
+  border: 0.55px solid grey;
+  border-radius: 10px;
+  /* margin-right: 4px; */
+  text-align: center;
+}
+
+::ng-deep .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate
+{
+  background: #a71c37 !important; 
+}
